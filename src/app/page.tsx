@@ -4,20 +4,29 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
       {/* Navigation */}
-      <nav className="bg-white shadow-sm border-b">
+      <nav className="bg-white/80 backdrop-blur-md shadow-sm border-b border-gray-200/50 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center">
-              <h1 className="text-2xl font-bold text-gray-900">AI Exam Platform</h1>
+              <div className="flex items-center space-x-2">
+                <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-lg flex items-center justify-center">
+                  <span className="text-white font-bold text-sm">AI</span>
+                </div>
+                <h1 className="text-2xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent">
+                  AI Exam Platform
+                </h1>
+              </div>
             </div>
             <div className="flex items-center space-x-4">
-              <Link href="/auth/login">
-                <Button variant="ghost">Sign In</Button>
+              <Link href="/login">
+                <Button variant="ghost" className="hover:bg-blue-50">Sign In</Button>
               </Link>
-              <Link href="/auth/signup">
-                <Button>Get Started</Button>
+              <Link href="/signup">
+                <Button className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700">
+                  Get Started
+                </Button>
               </Link>
             </div>
           </div>
@@ -27,25 +36,49 @@ export default function Home() {
       {/* Hero Section */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
         <div className="text-center">
-          <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
+          {/* Badge */}
+          <div className="inline-flex items-center px-4 py-2 bg-blue-100 text-blue-800 rounded-full text-sm font-medium mb-8">
+            <span className="w-2 h-2 bg-blue-600 rounded-full mr-2"></span>
+            Powered by Advanced AI Technology
+          </div>
+          
+          <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6 leading-tight">
             Transform Traditional Exams into{" "}
-            <span className="text-blue-600">Personalized Assessments</span>
+            <span className="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+              Personalized Assessments
+            </span>
           </h1>
-          <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
+          <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto leading-relaxed">
             AI-powered platform that automatically customizes exam questions for each student group 
             while maintaining consistent difficulty and learning objectives.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/auth/signup">
-              <Button size="lg" className="w-full sm:w-auto">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+            <Link href="/signup">
+              <Button size="lg" className="w-full sm:w-auto bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 px-8 py-4 text-lg shadow-lg">
                 Start Creating Personalized Exams
               </Button>
             </Link>
-            <Link href="/demo">
-              <Button variant="outline" size="lg" className="w-full sm:w-auto">
-                See Demo
+            <Link href="/login">
+              <Button variant="outline" size="lg" className="w-full sm:w-auto px-8 py-4 text-lg border-2 hover:bg-blue-50">
+                Sign In to Continue
               </Button>
             </Link>
+          </div>
+          
+          {/* Stats */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-2xl mx-auto">
+            <div className="text-center">
+              <div className="text-3xl font-bold text-blue-600 mb-2">10x</div>
+              <div className="text-gray-600">Faster Question Creation</div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl font-bold text-indigo-600 mb-2">95%</div>
+              <div className="text-gray-600">Student Engagement</div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl font-bold text-purple-600 mb-2">50%</div>
+              <div className="text-gray-600">Better Learning Outcomes</div>
+            </div>
           </div>
         </div>
       </div>
@@ -62,34 +95,34 @@ export default function Home() {
         </div>
 
         <div className="grid md:grid-cols-3 gap-8">
-          <Card>
+          <Card className="border-0 shadow-lg hover:shadow-xl transition-shadow bg-white/50 backdrop-blur-sm">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
-                  👥
+                <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-md">
+                  <span className="text-white text-lg">👥</span>
                 </div>
                 Smart Student Clustering
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <CardDescription>
+              <CardDescription className="text-gray-600 leading-relaxed">
                 AI automatically groups students by major, academic level, and career interests 
                 to create meaningful personalized question variations.
               </CardDescription>
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="border-0 shadow-lg hover:shadow-xl transition-shadow bg-white/50 backdrop-blur-sm">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
-                  🤖
+                <div className="w-10 h-10 bg-gradient-to-br from-green-500 to-green-600 rounded-xl flex items-center justify-center shadow-md">
+                  <span className="text-white text-lg">🤖</span>
                 </div>
                 AI Question Customization
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <CardDescription>
+              <CardDescription className="text-gray-600 leading-relaxed">
                 Transform generic questions into contextually relevant scenarios that match 
                 each student&apos;s career goals while preserving learning objectives.
               </CardDescription>
