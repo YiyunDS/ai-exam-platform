@@ -402,10 +402,11 @@ SELECT
   MODE() WITHIN GROUP (ORDER BY s.major) as dominant_major,
   MODE() WITHIN GROUP (ORDER BY s.academic_level) as dominant_level,
   COUNT(DISTINCT s.major) as major_diversity,
-  STRING_AGG(DISTINCT unnest(s.career_interests), ', ') as common_interests
+  STRING_AGG(DISTINCT career_interest, ', ') as common_interests
 FROM clusters c
 LEFT JOIN student_clusters sc ON c.id = sc.cluster_id
 LEFT JOIN students s ON sc.student_id = s.id
+LEFT JOIN LATERAL unnest(s.career_interests) AS career_interest ON true
 WHERE s.active = true OR s.id IS NULL
 GROUP BY c.teacher_id, c.id, c.name;
 

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Users, Bot, BarChart } from 'lucide-react';
 
 export default function Home() {
   return (
@@ -11,7 +12,7 @@ export default function Home() {
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center">
               <div className="flex items-center space-x-2">
-                <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center">
+                <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
                   <span className="text-white font-semibold text-sm">AI</span>
                 </div>
                 <h1 className="text-xl font-semibold text-gray-900 tracking-tight">
@@ -24,7 +25,7 @@ export default function Home() {
                 <Button variant="ghost" className="text-gray-700 hover:bg-gray-50 font-medium">Sign In</Button>
               </Link>
               <Link href="/signup">
-                <Button className="bg-black hover:bg-gray-800 text-white font-medium px-6">
+                <Button className="bg-primary hover:bg-primary/90 text-white font-medium px-6">
                   Get Started
                 </Button>
               </Link>
@@ -37,14 +38,14 @@ export default function Home() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
         <div className="text-center">
           {/* Badge */}
-          <div className="inline-flex items-center px-4 py-2 bg-gray-100 text-gray-700 rounded-full text-sm font-medium mb-12">
-            <span className="w-2 h-2 bg-gray-500 rounded-full mr-2"></span>
+          <div className="inline-flex items-center px-4 py-2 bg-secondary text-secondary-foreground rounded-full text-sm font-medium mb-12">
+            <span className="w-2 h-2 bg-primary rounded-full mr-2"></span>
             Powered by Advanced AI Technology
           </div>
           
           <h1 className="text-5xl md:text-7xl font-bold text-gray-900 mb-6 leading-none tracking-tight">
             Transform Traditional Exams into{" "}
-            <span className="text-gray-600">
+            <span className="text-primary">
               Personalized Assessments
             </span>
           </h1>
@@ -54,7 +55,7 @@ export default function Home() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
             <Link href="/signup">
-              <Button size="lg" className="w-full sm:w-auto bg-black hover:bg-gray-800 px-8 py-4 text-lg font-medium">
+              <Button size="lg" className="w-full sm:w-auto bg-primary hover:bg-primary/90 px-8 py-4 text-lg font-medium text-primary-foreground">
                 Start Creating Personalized Exams
               </Button>
             </Link>
@@ -68,15 +69,15 @@ export default function Home() {
           {/* Stats */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12 max-w-2xl mx-auto">
             <div className="text-center">
-              <div className="text-4xl font-bold text-gray-900 mb-2">10x</div>
+              <div className="text-4xl font-bold text-primary mb-2">10x</div>
               <div className="text-gray-500 font-light">Faster Question Creation</div>
             </div>
             <div className="text-center">
-              <div className="text-4xl font-bold text-gray-900 mb-2">95%</div>
+              <div className="text-4xl font-bold text-primary mb-2">95%</div>
               <div className="text-gray-500 font-light">Student Engagement</div>
             </div>
             <div className="text-center">
-              <div className="text-4xl font-bold text-gray-900 mb-2">50%</div>
+              <div className="text-4xl font-bold text-primary mb-2">50%</div>
               <div className="text-gray-500 font-light">Better Learning Outcomes</div>
             </div>
           </div>
@@ -84,7 +85,7 @@ export default function Home() {
       </div>
 
       {/* Features Section */}
-      <div className="bg-gray-50 py-24">
+      <div className="bg-secondary py-24">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-20">
             <h2 className="text-4xl font-bold text-gray-900 mb-4 tracking-tight">
@@ -98,8 +99,8 @@ export default function Home() {
           <div className="grid md:grid-cols-3 gap-8">
             <Card className="border-0 bg-white rounded-2xl p-8 hover:shadow-lg transition-all duration-200">
               <CardHeader className="pb-6">
-                <div className="w-12 h-12 bg-gray-100 rounded-2xl flex items-center justify-center mb-4">
-                  <span className="text-2xl">👥</span>
+                <div className="w-12 h-12 bg-primary/10 rounded-2xl flex items-center justify-center mb-4">
+                  <Users className="w-6 h-6 text-primary" />
                 </div>
                 <CardTitle className="text-xl font-semibold text-gray-900">
                   Smart Student Clustering
@@ -115,8 +116,8 @@ export default function Home() {
 
             <Card className="border-0 bg-white rounded-2xl p-8 hover:shadow-lg transition-all duration-200">
               <CardHeader className="pb-6">
-                <div className="w-12 h-12 bg-gray-100 rounded-2xl flex items-center justify-center mb-4">
-                  <span className="text-2xl">🤖</span>
+                <div className="w-12 h-12 bg-primary/10 rounded-2xl flex items-center justify-center mb-4">
+                  <Bot className="w-6 h-6 text-primary" />
                 </div>
                 <CardTitle className="text-xl font-semibold text-gray-900">
                   AI Question Customization
@@ -132,8 +133,8 @@ export default function Home() {
 
             <Card className="border-0 bg-white rounded-2xl p-8 hover:shadow-lg transition-all duration-200">
               <CardHeader className="pb-6">
-                <div className="w-12 h-12 bg-gray-100 rounded-2xl flex items-center justify-center mb-4">
-                  <span className="text-2xl">📊</span>
+                <div className="w-12 h-12 bg-primary/10 rounded-2xl flex items-center justify-center mb-4">
+                  <BarChart className="w-6 h-6 text-primary" />
                 </div>
                 <CardTitle className="text-xl font-semibold text-gray-900">
                   Easy Export & Management
@@ -162,8 +163,8 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="grid lg:grid-cols-2 gap-12">
-            <Card className="border-0 bg-gray-50 rounded-2xl p-8">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <Card className="border-0 bg-secondary rounded-2xl p-8">
               <CardHeader>
                 <CardTitle className="text-xl font-semibold text-gray-900 mb-4">Original Question</CardTitle>
               </CardHeader>
@@ -177,7 +178,7 @@ export default function Home() {
             </Card>
 
             <div className="space-y-6">
-              <Card className="border-0 bg-white rounded-2xl p-6 shadow-sm">
+              <Card className="border-0 bg-white rounded-2xl p-6 shadow-sm border-primary/20">
                 <CardHeader>
                   <CardTitle className="text-lg font-semibold text-gray-900 mb-3">For Finance Students</CardTitle>
                 </CardHeader>
@@ -189,7 +190,7 @@ export default function Home() {
                 </CardContent>
               </Card>
 
-              <Card className="border-0 bg-white rounded-2xl p-6 shadow-sm">
+              <Card className="border-0 bg-white rounded-2xl p-6 shadow-sm border-primary/20">
                 <CardHeader>
                   <CardTitle className="text-lg font-semibold text-gray-900 mb-3">For Marketing Students</CardTitle>
                 </CardHeader>
@@ -215,7 +216,7 @@ export default function Home() {
             Join thousands of educators creating personalized assessments with AI
           </p>
           <Link href="/signup">
-            <Button size="lg" className="bg-white text-gray-900 hover:bg-gray-100 px-8 py-4 text-lg font-medium">
+            <Button size="lg" className="bg-primary hover:bg-primary/90 px-8 py-4 text-lg font-medium text-primary-foreground">
               Start Free Trial
             </Button>
           </Link>

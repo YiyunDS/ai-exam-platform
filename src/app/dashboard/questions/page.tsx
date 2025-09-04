@@ -5,6 +5,8 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
+import { LoadingPage } from '@/components/ui/loading-skeleton'
 import { supabase } from '@/lib/supabase/client'
 import type { Question } from '@/lib/types'
 
@@ -57,12 +59,12 @@ export default function QuestionsPage() {
   const subjects = [...new Set(questions.map(q => q.subject))].sort()
   const difficulties = ['Easy', 'Medium', 'Hard']
 
-  const getDifficultyColor = (difficulty: string) => {
+  const getDifficultyVariant = (difficulty: string) => {
     switch (difficulty) {
-      case 'Easy': return 'bg-green-100 text-green-800'
-      case 'Medium': return 'bg-yellow-100 text-yellow-800'
-      case 'Hard': return 'bg-red-100 text-red-800'
-      default: return 'bg-gray-100 text-gray-800'
+      case 'Easy': return 'success'
+      case 'Medium': return 'warning'
+      case 'Hard': return 'error'
+      default: return 'gray'
     }
   }
 
@@ -77,18 +79,7 @@ export default function QuestionsPage() {
   }
 
   if (loading) {
-    return (
-      <div className="space-y-6">
-        <div className="flex items-center justify-between">
-          <h1 className="text-3xl font-bold">Questions</h1>
-          <Button disabled>Create Question</Button>
-        </div>
-        <div className="text-center py-12">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading questions...</p>
-        </div>
-      </div>
-    )
+    return <LoadingPage title="Questions" actionLabel="Loading questions..." />
   }
 
   return (
@@ -213,9 +204,9 @@ export default function QuestionsPage() {
                         <div className="flex items-center gap-2 text-sm text-gray-600">
                           <span>{question.subject}</span>
                           <span>•</span>
-                          <span className={`px-2 py-1 rounded text-xs ${getDifficultyColor(question.difficultyLevel)}`}>
+                          <Badge variant={getDifficultyVariant(question.difficultyLevel)}>
                             {question.difficultyLevel}
-                          </span>
+                          </Badge>
                           <span>•</span>
                           <span>{question.questionType}</span>
                         </div>
@@ -237,17 +228,14 @@ export default function QuestionsPage() {
                         <p className="text-xs font-medium text-gray-500 mb-1">Learning Objectives:</p>
                         <div className="flex flex-wrap gap-1">
                           {question.learningObjectives.slice(0, 3).map((objective, idx) => (
-                            <span
-                              key={idx}
-                              className="px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded"
-                            >
+                            <Badge key={idx} variant="info" size="sm">
                               {objective}
-                            </span>
+                            </Badge>
                           ))}
                           {question.learningObjectives.length > 3 && (
-                            <span className="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded">
+                            <Badge variant="gray" size="sm">
                               +{question.learningObjectives.length - 3} more
-                            </span>
+                            </Badge>
                           )}
                         </div>
                       </div>
@@ -258,17 +246,14 @@ export default function QuestionsPage() {
                       <div className="mb-3">
                         <div className="flex flex-wrap gap-1">
                           {question.tags.slice(0, 5).map((tag, idx) => (
-                            <span
-                              key={idx}
-                              className="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded"
-                            >
+                            <Badge key={idx} variant="gray" size="sm">
                               #{tag}
-                            </span>
+                            </Badge>
                           ))}
                           {question.tags.length > 5 && (
-                            <span className="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded">
+                            <Badge variant="gray" size="sm">
                               +{question.tags.length - 5} more
-                            </span>
+                            </Badge>
                           )}
                         </div>
                       </div>
@@ -281,9 +266,9 @@ export default function QuestionsPage() {
                           <span>Used {question.usageCount} times</span>
                         )}
                         {question.isTemplate && (
-                          <span className="px-2 py-1 bg-purple-100 text-purple-700 text-xs rounded">
+                          <Badge variant="purple" size="sm">
                             Template
-                          </span>
+                          </Badge>
                         )}
                       </div>
                     </div>

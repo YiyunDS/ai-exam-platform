@@ -71,7 +71,7 @@ export default function LoginPage() {
   }
 
   return (
-    <Card className="w-full border-0 bg-white rounded-2xl shadow-xl">
+    <Card className="w-full">
       <CardHeader className="text-center pb-8">
         <CardTitle className="text-3xl font-bold text-gray-900 mb-2 tracking-tight">Welcome Back</CardTitle>
         <CardDescription className="text-gray-500 font-light text-lg">
@@ -111,7 +111,7 @@ export default function LoginPage() {
           
           <Button 
             type="submit" 
-            className="w-full bg-black hover:bg-gray-800 text-white py-3 text-lg font-medium" 
+            className="w-full py-3 text-lg font-medium" 
             disabled={loading}
           >
             {loading ? 'Signing in...' : 'Sign In'}

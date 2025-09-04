@@ -4,7 +4,8 @@
       "Bash(npm run build:*)",
       "WebFetch(domain:www.apple.com)",
       "Bash(git add:*)",
-      "Bash(git push:*)"
+      "Bash(git push:*)",
+      "Bash(git commit:*)"
     ],
     "deny": [],
     "ask": []

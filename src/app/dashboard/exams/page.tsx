@@ -5,6 +5,8 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
+import { LoadingPage } from '@/components/ui/loading-skeleton'
 import { supabase } from '@/lib/supabase/client'
 
 interface Exam {
@@ -73,12 +75,12 @@ export default function ExamsPage() {
     return matchesSearch && matchesStatus
   })
 
-  const getStatusColor = (status: string) => {
+  const getStatusVariant = (status: string) => {
     switch (status) {
-      case 'published': return 'bg-green-100 text-green-800'
-      case 'draft': return 'bg-yellow-100 text-yellow-800'
-      case 'archived': return 'bg-gray-100 text-gray-800'
-      default: return 'bg-gray-100 text-gray-800'
+      case 'published': return 'success'
+      case 'draft': return 'warning'
+      case 'archived': return 'gray'
+      default: return 'gray'
     }
   }
 
@@ -99,18 +101,7 @@ export default function ExamsPage() {
   }
 
   if (loading) {
-    return (
-      <div className="space-y-6">
-        <div className="flex items-center justify-between">
-          <h1 className="text-3xl font-bold">Exams</h1>
-          <Button disabled>Create Exam</Button>
-        </div>
-        <div className="text-center py-12">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading exams...</p>
-        </div>
-      </div>
-    )
+    return <LoadingPage title="Exams" actionLabel="Loading exams..." />
   }
 
   return (
@@ -224,9 +215,9 @@ export default function ExamsPage() {
                       <div>
                         <h3 className="font-semibold text-lg">{exam.title}</h3>
                         <div className="flex items-center gap-2 text-sm text-gray-600">
-                          <span className={`px-2 py-1 rounded text-xs ${getStatusColor(exam.status)}`}>
+                          <Badge variant={getStatusVariant(exam.status)}>
                             {getStatusIcon(exam.status)} {exam.status.charAt(0).toUpperCase() + exam.status.slice(1)}
-                          </span>
+                          </Badge>
                           <span>•</span>
                           <span>{exam.totalQuestions} questions</span>
                           <span>•</span>

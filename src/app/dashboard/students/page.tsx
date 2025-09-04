@@ -5,6 +5,8 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { LoadingPage } from '@/components/ui/loading-skeleton'
+import { Badge } from '@/components/ui/badge'
 import { supabase } from '@/lib/supabase/client'
 import type { Student } from '@/lib/types'
 
@@ -49,18 +51,7 @@ export default function StudentsPage() {
   )
 
   if (loading) {
-    return (
-      <div className="space-y-6">
-        <div className="flex items-center justify-between">
-          <h1 className="text-3xl font-bold">Students</h1>
-          <Button disabled>Add Student</Button>
-        </div>
-        <div className="text-center py-12">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading students...</p>
-        </div>
-      </div>
-    )
+    return <LoadingPage title="Students" actionLabel="Loading students..." />
   }
 
   return (
@@ -157,17 +148,14 @@ export default function StudentsPage() {
                         {student.careerInterests.length > 0 && (
                           <div className="flex gap-1 mt-2">
                             {student.careerInterests.slice(0, 3).map((interest, index) => (
-                              <span
-                                key={index}
-                                className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded"
-                              >
+                              <Badge key={index} variant="gray" size="sm">
                                 {interest}
-                              </span>
+                              </Badge>
                             ))}
                             {student.careerInterests.length > 3 && (
-                              <span className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded">
+                              <Badge variant="gray" size="sm">
                                 +{student.careerInterests.length - 3} more
-                              </span>
+                              </Badge>
                             )}
                           </div>
                         )}
