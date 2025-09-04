@@ -50,7 +50,23 @@ export default function NewStudentPage() {
       router.push('/dashboard/students')
     } catch (error) {
       console.error('Error creating student:', error)
-      alert('Error creating student. Please try again.')
+      
+      // More specific error messages
+      let errorMessage = 'Error creating student. Please try again.'
+      
+      if (error instanceof Error) {
+        if (error.message.includes('auth')) {
+          errorMessage = 'Authentication error. Please sign in again.'
+        } else if (error.message.includes('network') || error.message.includes('fetch')) {
+          errorMessage = 'Network error. Please check your connection and try again.'
+        } else if (error.message.includes('Missing Supabase')) {
+          errorMessage = 'Database configuration error. Please contact support.'
+        } else {
+          errorMessage = `Error: ${error.message}`
+        }
+      }
+      
+      alert(errorMessage)
     } finally {
       setIsLoading(false)
     }

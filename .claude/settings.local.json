@@ -3,7 +3,8 @@
     "allow": [
       "Bash(npm run build:*)",
       "WebFetch(domain:www.apple.com)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git push:*)"
     ],
     "deny": [],
     "ask": []
