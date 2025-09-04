@@ -94,11 +94,11 @@ export default function SignupPage() {
   }
 
   return (
-    <Card className="w-full">
+    <Card className="w-full bg-white/95 backdrop-blur-sm border-0 shadow-2xl">
       <CardHeader className="text-center pb-8">
-        <CardTitle className="text-3xl font-bold text-gray-900 mb-2 tracking-tight">Create Account</CardTitle>
-        <CardDescription className="text-gray-500 font-light text-lg">
-          Join thousands of educators transforming their assessments
+        <CardTitle className="text-3xl font-bold text-navy-900 mb-2 tracking-tight">Create Account</CardTitle>
+        <CardDescription className="text-gray-600 font-light text-lg">
+          Join thousands of educators transforming their assessments with AI
         </CardDescription>
       </CardHeader>
       <CardContent className="px-8 pb-8">
@@ -185,7 +185,7 @@ export default function SignupPage() {
         <div className="mt-8 text-center">
           <p className="text-gray-600 font-light">
             Already have an account?{' '}
-            <Link href="/login" className="text-black hover:text-gray-700 font-medium">
+            <Link href="/login" className="text-primary hover:text-primary/80 font-medium">
               Sign in here
             </Link>
           </p>

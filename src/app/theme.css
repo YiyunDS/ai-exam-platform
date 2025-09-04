@@ -2,25 +2,35 @@
 @layer base {
   :root {
     --background: 0 0% 100%;
-    --foreground: 224 71.4% 4.1%;
+    --foreground: 215 25% 27%;
     --card: 0 0% 100%;
-    --card-foreground: 224 71.4% 4.1%;
+    --card-foreground: 215 25% 27%;
     --popover: 0 0% 100%;
-    --popover-foreground: 224 71.4% 4.1%;
-    --primary: 220 83.2% 53.3%;
+    --popover-foreground: 215 25% 27%;
+    --primary: 215 100% 50%;
     --primary-foreground: 0 0% 98%;
     --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary-foreground: 215 25% 27%;
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 174 100% 50%;
+    --accent-foreground: 215 25% 27%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 220 83.2% 53.3%;
-    --radius: 0.5rem;
+    --ring: 215 100% 50%;
+    --radius: 1rem;
+    
+    /* Custom colors for the new design */
+    --navy-900: 215 100% 15%;
+    --navy-800: 215 100% 20%;
+    --navy-700: 215 100% 25%;
+    --navy-600: 215 100% 30%;
+    --navy-500: 215 100% 35%;
+    --teal-500: 174 100% 50%;
+    --teal-400: 174 100% 60%;
+    --teal-300: 174 100% 70%;
   }
 
   .dark {

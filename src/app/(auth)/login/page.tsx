@@ -71,11 +71,11 @@ export default function LoginPage() {
   }
 
   return (
-    <Card className="w-full">
+    <Card className="w-full bg-white/95 backdrop-blur-sm border-0 shadow-2xl">
       <CardHeader className="text-center pb-8">
-        <CardTitle className="text-3xl font-bold text-gray-900 mb-2 tracking-tight">Welcome Back</CardTitle>
-        <CardDescription className="text-gray-500 font-light text-lg">
-          Sign in to your AI Exam Platform account
+        <CardTitle className="text-3xl font-bold text-navy-900 mb-2 tracking-tight">Welcome Back</CardTitle>
+        <CardDescription className="text-gray-600 font-light text-lg">
+          Sign in to your ExamGen AI account
         </CardDescription>
       </CardHeader>
       <CardContent className="px-8 pb-8">
@@ -121,7 +121,7 @@ export default function LoginPage() {
         <div className="mt-8 text-center">
           <p className="text-gray-600 font-light">
             Don&apos;t have an account?{' '}
-            <Link href="/signup" className="text-black hover:text-gray-700 font-medium">
+            <Link href="/signup" className="text-primary hover:text-primary/80 font-medium">
               Sign up here
             </Link>
           </p>
