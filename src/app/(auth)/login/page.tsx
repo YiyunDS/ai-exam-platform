@@ -71,15 +71,15 @@ export default function LoginPage() {
   }
 
   return (
-    <Card className="w-full">
-      <CardHeader>
-        <CardTitle className="text-2xl font-bold text-center">Welcome Back</CardTitle>
-        <CardDescription className="text-center">
+    <Card className="w-full border-0 bg-white rounded-2xl shadow-xl">
+      <CardHeader className="text-center pb-8">
+        <CardTitle className="text-3xl font-bold text-gray-900 mb-2 tracking-tight">Welcome Back</CardTitle>
+        <CardDescription className="text-gray-500 font-light text-lg">
           Sign in to your AI Exam Platform account
         </CardDescription>
       </CardHeader>
-      <CardContent>
-        <form onSubmit={handleLogin} className="space-y-4">
+      <CardContent className="px-8 pb-8">
+        <form onSubmit={handleLogin} className="space-y-6">
           {error && (
             <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
               {error}
@@ -111,24 +111,24 @@ export default function LoginPage() {
           
           <Button 
             type="submit" 
-            className="w-full" 
+            className="w-full bg-black hover:bg-gray-800 text-white py-3 text-lg font-medium" 
             disabled={loading}
           >
             {loading ? 'Signing in...' : 'Sign In'}
           </Button>
         </form>
         
-        <div className="mt-6 text-center">
-          <p className="text-sm text-gray-600">
+        <div className="mt-8 text-center">
+          <p className="text-gray-600 font-light">
             Don&apos;t have an account?{' '}
-            <Link href="/signup" className="text-blue-600 hover:text-blue-500 font-medium">
+            <Link href="/signup" className="text-black hover:text-gray-700 font-medium">
               Sign up here
             </Link>
           </p>
         </div>
         
-        <div className="mt-4 text-center">
-          <Link href="/" className="text-sm text-gray-500 hover:text-gray-700">
+        <div className="mt-6 text-center">
+          <Link href="/" className="text-gray-500 hover:text-gray-700 font-light">
             ← Back to homepage
           </Link>
         </div>
