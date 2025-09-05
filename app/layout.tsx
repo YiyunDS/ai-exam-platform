@@ -1,11 +1,8 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import "@fontsource/inter";
 import "./globals.css";
-
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-sans",
-});
+import "../src/styles/design-system.css";
+import ModernHeader from "@/components/ModernHeader";
 
 export const metadata: Metadata = {
   title: "AI Exam Platform",
@@ -22,7 +19,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.variable} font-sans antialiased`}>
+      <body>
+        <ModernHeader />
         {children}
       </body>
     </html>

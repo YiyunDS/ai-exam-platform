@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  srcDir: 'src',
   typescript: {
     // Allow builds to complete with TypeScript errors for deployment
     ignoreBuildErrors: true,
