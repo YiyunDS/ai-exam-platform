@@ -3,14 +3,17 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
-import { Bell, Home, FileText, BarChart2, Settings, User, Menu, X } from 'lucide-react'
+import { Bell, Home, FileText, BarChart2, Settings, User, Menu, X, Brain, Users, Activity, Sparkles } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useState } from 'react'
 
 const sidebarNavItems = [
   { href: '/dashboard', label: 'Dashboard', icon: Home },
+  { href: '/dashboard/generator', label: 'AI Generator', icon: Brain },
   { href: '/dashboard/exams', label: 'My Exams', icon: FileText },
   { href: '/dashboard/questions', label: 'Question Bank', icon: BarChart2 },
+  { href: '/dashboard/groups', label: 'Student Groups', icon: Users },
+  { href: '/dashboard/analytics', label: 'Analytics', icon: Activity },
   { href: '/dashboard/settings', label: 'Settings', icon: Settings },
 ]
 

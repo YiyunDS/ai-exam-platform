@@ -59,10 +59,23 @@ const config: Config = {
           500: "hsl(var(--navy-500))",
         },
         teal: {
-          500: "hsl(var(--teal-500))",
-          400: "hsl(var(--teal-400))",
-          300: "hsl(var(--teal-300))",
+          500: "hsl(var(--primary-teal))",
+          400: "hsl(var(--primary-light-teal))",
+          300: "hsl(var(--primary-light-teal))",
+          600: "hsl(var(--primary-dark-teal))",
         },
+        // Student group colors for visual differentiation
+        "group-finance": "hsl(var(--group-finance))",
+        "group-marketing": "hsl(var(--group-marketing))",
+        "group-engineering": "hsl(var(--group-engineering))",
+        "group-medicine": "hsl(var(--group-medicine))",
+        "group-arts": "hsl(var(--group-arts))",
+        "group-sports": "hsl(var(--group-sports))",
+        // Semantic colors
+        success: "hsl(var(--success))",
+        warning: "hsl(var(--warning))",
+        error: "hsl(var(--error))",
+        info: "hsl(var(--info))",
       },
       borderRadius: {
         lg: "var(--radius)",
