@@ -5,8 +5,18 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form'
 import { 
   studentSchema, 
   type StudentFormData, 
@@ -41,9 +51,8 @@ export function StudentForm({ student, onSubmit, onCancel, isLoading }: StudentF
     }
   })
 
-  const { register, handleSubmit, watch, setValue, formState: { errors } } = form
-  const watchedCareerInterests = watch('careerInterests')
-  const watchedMajor = watch('major')
+  const watchedCareerInterests = form.watch('careerInterests')
+  const watchedMajor = form.watch('major')
 
   const handleFormSubmit = async (data: StudentFormData) => {
     try {
@@ -56,14 +65,14 @@ export function StudentForm({ student, onSubmit, onCancel, isLoading }: StudentF
   const addCareerInterest = (interest: string) => {
     const trimmedInterest = interest.trim()
     if (trimmedInterest && !watchedCareerInterests.includes(trimmedInterest)) {
-      setValue('careerInterests', [...watchedCareerInterests, trimmedInterest])
+      form.setValue('careerInterests', [...watchedCareerInterests, trimmedInterest])
       setCareerInterestInput('')
       setShowInterestSuggestions(false)
     }
   }
 
   const removeCareerInterest = (index: number) => {
-    setValue('careerInterests', watchedCareerInterests.filter((_, i) => i !== index))
+    form.setValue('careerInterests', watchedCareerInterests.filter((_, i) => i !== index))
   }
 
   const handleCareerInterestKeyPress = (e: React.KeyboardEvent) => {
@@ -90,105 +99,132 @@ export function StudentForm({ student, onSubmit, onCancel, isLoading }: StudentF
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6">
-          {/* Name */}
-          <div className="space-y-2">
-            <Label htmlFor="name">Full Name *</Label>
-            <Input
-              id="name"
-              {...register('name')}
-              placeholder="John Doe"
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(handleFormSubmit)} className="space-y-6">
+            {/* Name */}
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Full Name *</FormLabel>
+                  <FormControl>
+                    <Input placeholder="John Doe" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
-            {errors.name && (
-              <p className="text-sm text-red-600">{errors.name.message}</p>
-            )}
-          </div>
 
-          {/* Email */}
-          <div className="space-y-2">
-            <Label htmlFor="email">Email (Optional)</Label>
-            <Input
-              id="email"
-              type="email"
-              {...register('email')}
-              placeholder="john.doe@university.edu"
+            {/* Email */}
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Email (Optional)</FormLabel>
+                  <FormControl>
+                    <Input type="email" placeholder="john.doe@university.edu" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
-            {errors.email && (
-              <p className="text-sm text-red-600">{errors.email.message}</p>
-            )}
-          </div>
 
-          {/* Major with Autocomplete */}
-          <div className="space-y-2 relative">
-            <Label htmlFor="major">Major *</Label>
-            <Input
-              id="major"
-              {...register('major')}
-              placeholder="Computer Science"
-              onFocus={() => setShowMajorSuggestions(true)}
-              onBlur={() => setTimeout(() => setShowMajorSuggestions(false), 200)}
-              onChange={(e) => {
-                register('major').onChange(e)
-                setShowMajorSuggestions(true)
-              }}
+            {/* Major with Autocomplete */}
+            <FormField
+              control={form.control}
+              name="major"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Major *</FormLabel>
+                  <Popover open={showMajorSuggestions} onOpenChange={setShowMajorSuggestions}>
+                    <PopoverTrigger asChild>
+                      <FormControl>
+                        <Input
+                          placeholder="Computer Science"
+                          {...field}
+                          onFocus={() => setShowMajorSuggestions(true)}
+                          onChange={(e) => {
+                            field.onChange(e)
+                            setShowMajorSuggestions(true)
+                          }}
+                        />
+                      </FormControl>
+                    </PopoverTrigger>
+                    {filteredMajors.length > 0 && (
+                      <PopoverContent className="w-full p-0" align="start">
+                        <div className="max-h-48 overflow-y-auto">
+                          {filteredMajors.slice(0, 5).map((major) => (
+                            <button
+                              key={major}
+                              type="button"
+                              className="w-full text-left px-3 py-2 hover:bg-accent focus:bg-accent"
+                              onClick={() => {
+                                form.setValue('major', major)
+                                setShowMajorSuggestions(false)
+                              }}
+                            >
+                              {major}
+                            </button>
+                          ))}
+                        </div>
+                      </PopoverContent>
+                    )}
+                  </Popover>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
-            {showMajorSuggestions && filteredMajors.length > 0 && (
-              <div className="absolute z-10 w-full bg-white border border-gray-200 rounded-md shadow-lg max-h-48 overflow-y-auto">
-                {filteredMajors.slice(0, 5).map((major) => (
-                  <button
-                    key={major}
-                    type="button"
-                    className="w-full text-left px-3 py-2 hover:bg-gray-100 focus:bg-gray-100"
-                    onMouseDown={() => {
-                      setValue('major', major)
-                      setShowMajorSuggestions(false)
-                    }}
-                  >
-                    {major}
-                  </button>
-                ))}
-              </div>
-            )}
-            {errors.major && (
-              <p className="text-sm text-red-600">{errors.major.message}</p>
-            )}
-          </div>
 
-          {/* Academic Level */}
-          <div className="space-y-2">
-            <Label htmlFor="academicLevel">Academic Level *</Label>
-            <select
-              id="academicLevel"
-              {...register('academicLevel')}
-              className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-            >
-              {academicLevels.map((level) => (
-                <option key={level} value={level}>
-                  {level}
-                </option>
-              ))}
-            </select>
-            {errors.academicLevel && (
-              <p className="text-sm text-red-600">{errors.academicLevel.message}</p>
-            )}
-          </div>
-
-          {/* GPA */}
-          <div className="space-y-2">
-            <Label htmlFor="gpa">GPA (Optional)</Label>
-            <Input
-              id="gpa"
-              type="number"
-              step="0.01"
-              min="0"
-              max="4"
-              {...register('gpa', { valueAsNumber: true })}
-              placeholder="3.75"
+            {/* Academic Level */}
+            <FormField
+              control={form.control}
+              name="academicLevel"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Academic Level *</FormLabel>
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select academic level" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {academicLevels.map((level) => (
+                        <SelectItem key={level} value={level}>
+                          {level}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
-            {errors.gpa && (
-              <p className="text-sm text-red-600">{errors.gpa.message}</p>
-            )}
-          </div>
+
+            {/* GPA */}
+            <FormField
+              control={form.control}
+              name="gpa"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>GPA (Optional)</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="number"
+                      step="0.01"
+                      min="0"
+                      max="4"
+                      placeholder="3.75"
+                      {...field}
+                      onChange={(e) => field.onChange(e.target.valueAsNumber || undefined)}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
           {/* Career Interests */}
           <div className="space-y-2">
@@ -198,19 +234,16 @@ export function StudentForm({ student, onSubmit, onCancel, isLoading }: StudentF
             {watchedCareerInterests.length > 0 && (
               <div className="flex flex-wrap gap-2 mb-2">
                 {watchedCareerInterests.map((interest, index) => (
-                  <span
-                    key={index}
-                    className="inline-flex items-center gap-1 px-2 py-1 bg-blue-100 text-blue-800 text-sm rounded"
-                  >
+                  <Badge key={index} variant="secondary" className="gap-1">
                     {interest}
                     <button
                       type="button"
                       onClick={() => removeCareerInterest(index)}
-                      className="ml-1 text-blue-600 hover:text-blue-800"
+                      className="ml-1 hover:text-destructive"
                     >
                       ×
                     </button>
-                  </span>
+                  </Badge>
                 ))}
               </div>
             )}
@@ -241,23 +274,27 @@ export function StudentForm({ student, onSubmit, onCancel, isLoading }: StudentF
 
             {/* Interest Suggestions */}
             {showInterestSuggestions && careerInterestInput && filteredInterests.length > 0 && (
-              <div className="bg-white border border-gray-200 rounded-md shadow-lg max-h-48 overflow-y-auto">
-                {filteredInterests.slice(0, 5).map((interest) => (
-                  <button
-                    key={interest}
-                    type="button"
-                    className="w-full text-left px-3 py-2 hover:bg-gray-100 focus:bg-gray-100"
-                    onMouseDown={() => addCareerInterest(interest)}
-                  >
-                    {interest}
-                  </button>
-                ))}
-              </div>
+              <Popover open={showInterestSuggestions} onOpenChange={setShowInterestSuggestions}>
+                <PopoverTrigger asChild>
+                  <div />
+                </PopoverTrigger>
+                <PopoverContent className="w-full p-0" align="start">
+                  <div className="max-h-48 overflow-y-auto">
+                    {filteredInterests.slice(0, 5).map((interest) => (
+                      <button
+                        key={interest}
+                        type="button"
+                        className="w-full text-left px-3 py-2 hover:bg-accent focus:bg-accent"
+                        onMouseDown={() => addCareerInterest(interest)}
+                      >
+                        {interest}
+                      </button>
+                    ))}
+                  </div>
+                </PopoverContent>
+              </Popover>
             )}
 
-            {errors.careerInterests && (
-              <p className="text-sm text-red-600">{errors.careerInterests.message}</p>
-            )}
           </div>
 
           {/* Form Actions */}
@@ -278,7 +315,8 @@ export function StudentForm({ student, onSubmit, onCancel, isLoading }: StudentF
               Cancel
             </Button>
           </div>
-        </form>
+          </form>
+        </Form>
       </CardContent>
     </Card>
   )
