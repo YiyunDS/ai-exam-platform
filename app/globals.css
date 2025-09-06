@@ -150,7 +150,7 @@
 @layer components {
   /* Custom component styles */
   .glass-effect {
-    @apply backdrop-blur-md bg-background/80 border border-border/50;
+    @apply bg-background/80 border border-border/50 shadow-lg;
   }
   
   /* Enhanced card hover effects */
