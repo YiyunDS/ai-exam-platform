@@ -23,7 +23,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
 
   const Sidebar = () => (
-    <aside className="w-64 flex-shrink-0 bg-gradient-to-b from-gray-900 to-gray-800 text-white flex flex-col relative overflow-hidden">
+    <aside className={`sidebar ${isSidebarOpen ? 'open' : ''} bg-gradient-to-b from-gray-900 to-gray-800 text-white flex flex-col relative overflow-hidden md:w-64 md:flex-shrink-0 md:relative md:translate-x-0 md:z-auto`}>
       {/* Background orb for sidebar */}
       <div className="absolute top-20 right-0 w-32 h-32 bg-gradient-to-br from-blue-500/20 to-purple-600/20 rounded-full blur-3xl"></div>
       
@@ -91,45 +91,45 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   )
 
   return (
-    <div className="min-h-screen flex bg-gray-50 relative overflow-hidden">
+    <div className="app-layout bg-gray-50 relative overflow-hidden">
       {/* Background pattern */}
       <div className="absolute inset-0 bg-grid-white/[0.02] bg-[size:60px_60px] pointer-events-none"></div>
-      {/* Desktop Sidebar */}
-      <div className="hidden md:flex">
-        <Sidebar />
-      </div>
-
-      {/* Mobile Sidebar & Header */}
-      <div className="flex-1 flex flex-col">
-        <header className="md:hidden h-20 flex justify-between items-center px-6 bg-white/80 backdrop-blur-sm border-b border-gray-200">
-          <div className="flex items-center gap-3">
-            <div className="p-2 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg">
-              <Brain className="h-5 w-5 text-white" />
-            </div>
-            <span className="text-lg font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-              ExamGen AI
-            </span>
+      
+      {/* Mobile Header */}
+      <header className="mobile-header md:hidden">
+        <div className="flex items-center gap-3">
+          <div className="p-2 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg">
+            <Brain className="h-5 w-5 text-white" />
           </div>
-          <Button variant="ghost" size="icon" onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
-            <Menu className="h-6 w-6" />
-          </Button>
-        </header>
-
-        {/* Mobile Sidebar Panel */}
-        {isSidebarOpen && (
-          <div className="md:hidden fixed inset-0 bg-black/50 z-40" onClick={() => setIsSidebarOpen(false)}></div>
-        )}
-        <div className={`md:hidden fixed top-0 left-0 h-full z-50 transition-transform duration-300 ease-in-out ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
-          <Sidebar />
+          <span className="text-lg font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+            ExamGen AI
+          </span>
         </div>
+        <button 
+          className="mobile-menu-button"
+          onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+        >
+          <Menu className="h-5 w-5" />
+        </button>
+      </header>
 
-        {/* Main Content */}
-        <main className="flex-1 p-6 md:p-10 relative z-10">
+      {/* Overlay for mobile */}
+      <div 
+        className={`overlay ${isSidebarOpen ? 'active' : ''} md:hidden`}
+        onClick={() => setIsSidebarOpen(false)}
+      ></div>
+
+      {/* Sidebar */}
+      <Sidebar />
+
+      {/* Main Content */}
+      <main className={`main-content ${!isSidebarOpen ? '' : ''} md:with-sidebar`}>
+        <div className="p-6 md:p-10 relative z-10">
           <div className="max-w-7xl mx-auto">
             {children}
           </div>
-        </main>
-      </div>
+        </div>
+      </main>
     </div>
   )
 }
