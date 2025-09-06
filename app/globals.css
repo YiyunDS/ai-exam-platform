@@ -150,12 +150,18 @@
 @layer components {
   /* Custom component styles */
   .glass-effect {
-    @apply bg-background/80 border border-border/50 shadow-lg;
+    @apply bg-background/80 border border-border/50;
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
   }
   
   /* Enhanced card hover effects */
   .card-hover {
-    @apply transition-all duration-200 hover:shadow-md hover:-translate-y-1;
+    @apply transition-all duration-200 hover:-translate-y-1;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  
+  .card-hover:hover {
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
   }
   
   /* Improved focus styles */
@@ -204,7 +210,11 @@
   .btn-gradient {
     @apply bg-gradient-to-r from-primary to-primary/80 text-primary-foreground;
     @apply hover:from-primary/90 hover:to-primary/70 transition-all duration-200;
-    @apply shadow-md hover:shadow-lg;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  }
+  
+  .btn-gradient:hover {
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
   }
   
   /* Enhanced table styles */
@@ -214,7 +224,8 @@
   
   /* Better toast styles */
   [data-sonner-toast] {
-    @apply rounded-lg border border-border shadow-lg;
+    @apply rounded-lg border border-border;
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
   }
   
   [data-sonner-toast][data-type="success"] {

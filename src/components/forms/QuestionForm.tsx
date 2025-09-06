@@ -365,9 +365,6 @@ export function QuestionForm({ question, onSubmit, onCancel, isLoading }: Questi
                 </div>
               )}
 
-              {errors.learningObjectives && (
-                <p className="text-sm text-red-600">{errors.learningObjectives.message}</p>
-              )}
             </div>
 
             {/* Tags */}
@@ -432,9 +429,6 @@ export function QuestionForm({ question, onSubmit, onCancel, isLoading }: Questi
                 </div>
               )}
 
-              {errors.tags && (
-                <p className="text-sm text-red-600">{errors.tags.message}</p>
-              )}
             </div>
 
             {/* Form Actions */}
