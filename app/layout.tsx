@@ -9,7 +9,11 @@ export const metadata: Metadata = {
   description: "Transform traditional exams into personalized assessments with AI-powered customization",
   keywords: "education, AI, exam, assessment, personalization, teaching",
   authors: [{ name: "AI Exam Platform Team" }],
-  viewport: "width=device-width, initial-scale=1",
+};
+
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
 };
 
 export default function RootLayout({
