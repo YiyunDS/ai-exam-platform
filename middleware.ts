@@ -31,6 +31,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: []
-  // Temporarily disabled: ['/', '/dashboard/:path*']
+  matcher: ['/', '/dashboard/:path*']
 }
