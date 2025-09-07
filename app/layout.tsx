@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "@fontsource/inter";
 import "./globals.css";
 import "../src/styles/design-system.css";
-import ModernHeader from "@/components/ModernHeader";
+import ConditionalHeader from "@/components/ConditionalHeader";
 
 export const metadata: Metadata = {
   title: "AI Exam Platform",
@@ -24,7 +24,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body>
-        <ModernHeader />
+        <ConditionalHeader />
         {children}
       </body>
     </html>
