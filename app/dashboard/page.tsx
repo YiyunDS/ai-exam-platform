@@ -15,8 +15,13 @@ import {
   Brain,
   Target,
   Upload,
-  Activity
+  Activity,
+  Clock
 } from 'lucide-react'
+import { motion } from 'framer-motion'
+
+import StatsCard from '@/components/dashboard/StatsCard'
+import QuickActions from '@/components/dashboard/QuickActions'
 
 export default function Dashboard() {
   const [stats, setStats] = useState({
@@ -34,10 +39,10 @@ export default function Dashboard() {
         // Simulate API call
         await new Promise(resolve => setTimeout(resolve, 1000))
         setStats({
-          students: 125,
-          questions: 48,
-          groups: 6,
-          exams: 12
+          students: 5,
+          questions: 4,
+          groups: 0,
+          exams: 0
         })
       } catch (error) {
         console.error('Error loading dashboard data:', error)
@@ -50,260 +55,243 @@ export default function Dashboard() {
   }, [])
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
-      <div className="max-w-7xl mx-auto space-y-6">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 p-6">
+      <div className="max-w-7xl mx-auto space-y-8">
         {/* Header */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div>
-            <h1 className="text-2xl font-semibold text-gray-900">
+            <motion.h1 
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="text-3xl font-bold text-slate-900"
+            >
               Welcome to ExamAI
-            </h1>
-            <p className="text-gray-600 mt-1">Transform your exams with AI-powered personalization</p>
+            </motion.h1>
+            <p className="text-slate-600 mt-2">Transform your exams with AI-powered personalization</p>
           </div>
-          <div className="flex gap-3">
-            <Link href="/dashboard/students/import">
-              <Button variant="outline" className="flex items-center gap-2">
-                <Upload className="w-4 h-4" />
-                Import Students
-              </Button>
-            </Link>
-            <Link href="/dashboard/questions/new">
-              <Button className="bg-blue-600 hover:bg-blue-700 flex items-center gap-2">
-                <Plus className="w-4 h-4" />
-                Create Question
-              </Button>
-            </Link>
-          </div>
+          <QuickActions />
         </div>
 
         {/* Stats Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <Card className="bg-white border border-gray-200">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-600">Students</p>
-                  <p className="text-2xl font-semibold text-gray-900">{isLoading ? '-' : stats.students}</p>
-                  <p className="text-sm text-green-600">+12% this month</p>
-                </div>
-                <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                  <Users className="w-6 h-6 text-blue-600" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-          <Card className="bg-white border border-gray-200">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-600">Questions</p>
-                  <p className="text-2xl font-semibold text-gray-900">{isLoading ? '-' : stats.questions}</p>
-                  <p className="text-sm text-green-600">Growing collection</p>
-                </div>
-                <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
-                  <HelpCircle className="w-6 h-6 text-green-600" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-          <Card className="bg-white border border-gray-200">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-600">AI Groups</p>
-                  <p className="text-2xl font-semibold text-gray-900">{isLoading ? '-' : stats.groups}</p>
-                  <p className="text-sm text-green-600">Auto-generated</p>
-                </div>
-                <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
-                  <UserCheck className="w-6 h-6 text-purple-600" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-          <Card className="bg-white border border-gray-200">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-600">Exams Created</p>
-                  <p className="text-2xl font-semibold text-gray-900">{isLoading ? '-' : stats.exams}</p>
-                  <p className="text-sm text-green-600">Personalized</p>
-                </div>
-                <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
-                  <FileText className="w-6 h-6 text-orange-600" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+          <StatsCard
+            title="Students"
+            value={stats.students}
+            icon={Users}
+            color="bg-blue-500"
+            trend="+12% this month"
+            isLoading={isLoading}
+          />
+          <StatsCard
+            title="Questions"
+            value={stats.questions}
+            icon={HelpCircle}
+            color="bg-emerald-500"
+            trend="Growing collection"
+            isLoading={isLoading}
+          />
+          <StatsCard
+            title="AI Groups"
+            value={stats.groups}
+            icon={UserCheck}
+            color="bg-purple-500"
+            trend="Auto-generated"
+            isLoading={isLoading}
+          />
+          <StatsCard
+            title="Exams Created"
+            value={stats.exams}
+            icon={FileText}
+            color="bg-amber-500"
+            trend="Personalized"
+            isLoading={isLoading}
+          />
         </div>
 
         {/* Main Content Grid */}
-        <div className="grid lg:grid-cols-3 gap-6">
+        <div className="grid lg:grid-cols-3 gap-8">
           {/* AI Features Highlight */}
-          <div className="lg:col-span-2">
-            <Card className="bg-gradient-to-br from-blue-500 to-purple-600 border-0 text-white">
-              <CardContent className="p-8">
-                <div className="flex items-center gap-4 mb-6">
-                  <div className="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center">
-                    <Brain className="w-6 h-6 text-white" />
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.2 }}
+            className="lg:col-span-2"
+          >
+            <Card className="bg-gradient-to-br from-indigo-500 to-purple-600 border-0 text-white overflow-hidden relative">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full transform translate-x-8 -translate-y-8" />
+              <CardHeader className="relative">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
+                    <Brain className="w-7 h-7 text-white" />
                   </div>
                   <div>
-                    <h3 className="text-xl font-semibold text-white">AI-Powered Personalization</h3>
-                    <p className="text-blue-100 text-sm">Make every exam relevant to each student</p>
+                    <CardTitle className="text-xl font-bold text-white">AI-Powered Personalization</CardTitle>
+                    <p className="text-indigo-100 text-sm">Make every exam relevant to each student</p>
                   </div>
                 </div>
-                <div className="space-y-3 mb-6">
+              </CardHeader>
+              <CardContent className="relative">
+                <div className="space-y-4">
                   <div className="flex items-center gap-3">
-                    <Target className="w-4 h-4 text-blue-200" />
-                    <span className="text-blue-100 text-sm">Smart student clustering by academic profile</span>
+                    <Target className="w-5 h-5 text-indigo-200" />
+                    <span className="text-indigo-100">Smart student clustering by academic profile</span>
                   </div>
                   <div className="flex items-center gap-3">
-                    <Sparkles className="w-4 h-4 text-blue-200" />
-                    <span className="text-blue-100 text-sm">Context-aware question customization</span>
+                    <Sparkles className="w-5 h-5 text-indigo-200" />
+                    <span className="text-indigo-100">Context-aware question customization</span>
                   </div>
                   <div className="flex items-center gap-3">
-                    <TrendingUp className="w-4 h-4 text-blue-200" />
-                    <span className="text-blue-100 text-sm">Consistent difficulty across all versions</span>
+                    <TrendingUp className="w-5 h-5 text-indigo-200" />
+                    <span className="text-indigo-100">Consistent difficulty across all versions</span>
                   </div>
                 </div>
-                <div className="flex gap-3">
+                <div className="flex gap-3 mt-6">
                   <Link href="/dashboard/students">
-                    <Button variant="secondary" size="sm" className="bg-white/20 border-white/30 text-white hover:bg-white/30">
+                    <Button variant="secondary" className="bg-white/20 border-white/30 text-white hover:bg-white/30">
                       Manage Students
                     </Button>
                   </Link>
                   <Link href="/dashboard/groups">
-                    <Button variant="secondary" size="sm" className="bg-white/20 border-white/30 text-white hover:bg-white/30">
+                    <Button variant="secondary" className="bg-white/20 border-white/30 text-white hover:bg-white/30">
                       View Groups
                     </Button>
                   </Link>
                 </div>
               </CardContent>
             </Card>
-          </div>
+          </motion.div>
 
           {/* Recent Activity */}
-          <div>
-            <Card className="bg-white border border-gray-200">
-              <CardHeader className="pb-3">
-                <CardTitle className="text-base font-semibold text-gray-900 flex items-center gap-2">
-                  <Activity className="w-4 h-4" />
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.3 }}
+          >
+            <Card className="bg-white/80 backdrop-blur-sm border border-slate-200 h-fit">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2 text-lg font-bold text-slate-900">
+                  <Clock className="w-5 h-5" />
                   Recent Activity
                 </CardTitle>
               </CardHeader>
-              <CardContent>
-                <div className="space-y-3">
-                  <div className="flex items-center gap-3 p-2 rounded-lg bg-green-50">
-                    <div className="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center">
-                      <HelpCircle className="w-3 h-3 text-green-600" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-gray-900 truncate">New question: Algorithm Complexity Anal...</p>
-                      <div className="flex items-center gap-2 text-xs text-gray-500">
-                        <span>Computer Science</span>
-                        <span>Sep 6</span>
-                      </div>
+              <CardContent className="space-y-4">
+                <div className="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-50 transition-colors">
+                  <div className="w-10 h-10 bg-emerald-500 rounded-full flex items-center justify-center">
+                    <HelpCircle className="w-5 h-5 text-white" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="font-medium text-slate-900 text-sm truncate">New question: Algorithm Complexity Anal...</p>
+                    <div className="flex items-center gap-2 mt-1">
+                      <span className="text-xs bg-slate-100 text-slate-700 px-2 py-1 rounded">Computer Science</span>
+                      <span className="text-xs text-slate-500">Sep 6</span>
                     </div>
                   </div>
-                  
-                  <div className="flex items-center gap-3 p-2 rounded-lg bg-green-50">
-                    <div className="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center">
-                      <HelpCircle className="w-3 h-3 text-green-600" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-gray-900 truncate">New question: Market Strategy Developm...</p>
-                      <div className="flex items-center gap-2 text-xs text-gray-500">
-                        <span>Business Administration</span>
-                        <span>Sep 6</span>
-                      </div>
+                </div>
+                
+                <div className="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-50 transition-colors">
+                  <div className="w-10 h-10 bg-emerald-500 rounded-full flex items-center justify-center">
+                    <HelpCircle className="w-5 h-5 text-white" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="font-medium text-slate-900 text-sm truncate">New question: Market Strategy Developm...</p>
+                    <div className="flex items-center gap-2 mt-1">
+                      <span className="text-xs bg-slate-100 text-slate-700 px-2 py-1 rounded">Business Administration</span>
+                      <span className="text-xs text-slate-500">Sep 6</span>
                     </div>
                   </div>
-                  
-                  <div className="flex items-center gap-3 p-2 rounded-lg bg-green-50">
-                    <div className="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center">
-                      <HelpCircle className="w-3 h-3 text-green-600" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-gray-900 truncate">New question: Stress Analysis Problem</p>
-                      <div className="flex items-center gap-2 text-xs text-gray-500">
-                        <span>Mechanical Engineering</span>
-                        <span>Sep 6</span>
-                      </div>
+                </div>
+                
+                <div className="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-50 transition-colors">
+                  <div className="w-10 h-10 bg-emerald-500 rounded-full flex items-center justify-center">
+                    <HelpCircle className="w-5 h-5 text-white" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="font-medium text-slate-900 text-sm truncate">New question: Stress Analysis Problem</p>
+                    <div className="flex items-center gap-2 mt-1">
+                      <span className="text-xs bg-slate-100 text-slate-700 px-2 py-1 rounded">Mechanical Engineering</span>
+                      <span className="text-xs text-slate-500">Sep 6</span>
                     </div>
                   </div>
-                  
-                  <div className="flex items-center gap-3 p-2 rounded-lg bg-blue-50">
-                    <div className="w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center">
-                      <Users className="w-3 h-3 text-blue-600" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-gray-900 truncate">New student: Lisa Thompson</p>
-                      <div className="flex items-center gap-2 text-xs text-gray-500">
-                        <span>Computer Science</span>
-                        <span>Sep 6</span>
-                      </div>
+                </div>
+                
+                <div className="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-50 transition-colors">
+                  <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center">
+                    <Users className="w-5 h-5 text-white" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="font-medium text-slate-900 text-sm truncate">New student: Lisa Thompson</p>
+                    <div className="flex items-center gap-2 mt-1">
+                      <span className="text-xs bg-slate-100 text-slate-700 px-2 py-1 rounded">Computer Science</span>
+                      <span className="text-xs text-slate-500">Sep 6</span>
                     </div>
                   </div>
-                  
-                  <div className="flex items-center gap-3 p-2 rounded-lg bg-blue-50">
-                    <div className="w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center">
-                      <Users className="w-3 h-3 text-blue-600" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-gray-900 truncate">New student: David Park</p>
-                      <div className="flex items-center gap-2 text-xs text-gray-500">
-                        <span>Psychology</span>
-                        <span>Sep 6</span>
-                      </div>
+                </div>
+                
+                <div className="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-50 transition-colors">
+                  <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center">
+                    <Users className="w-5 h-5 text-white" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="font-medium text-slate-900 text-sm truncate">New student: David Park</p>
+                    <div className="flex items-center gap-2 mt-1">
+                      <span className="text-xs bg-slate-100 text-slate-700 px-2 py-1 rounded">Psychology</span>
+                      <span className="text-xs text-slate-500">Sep 6</span>
                     </div>
                   </div>
                 </div>
               </CardContent>
             </Card>
-          </div>
+          </motion.div>
         </div>
 
         {/* Getting Started Guide */}
-        <Card className="bg-white border border-gray-200">
-          <CardHeader>
-            <CardTitle className="text-lg font-semibold text-gray-900">Getting Started</CardTitle>
-            <p className="text-gray-600 text-sm">Follow these steps to create your first personalized exam</p>
-          </CardHeader>
-          <CardContent>
-            <div className="grid md:grid-cols-4 gap-4">
-              <div className="flex flex-col items-center text-center p-4 rounded-lg bg-blue-50">
-                <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center mb-3">
-                  <span className="text-white font-semibold text-sm">1</span>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4 }}
+        >
+          <Card className="bg-white/80 backdrop-blur-sm border border-slate-200">
+            <CardHeader>
+              <CardTitle className="text-xl font-bold text-slate-900">Getting Started</CardTitle>
+              <p className="text-slate-600">Follow these steps to create your first personalized exam</p>
+            </CardHeader>
+            <CardContent>
+              <div className="grid md:grid-cols-4 gap-4">
+                <div className="flex flex-col items-center text-center p-4 rounded-lg bg-blue-50 border border-blue-100">
+                  <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center mb-3">
+                    <span className="text-white font-bold">1</span>
+                  </div>
+                  <h3 className="font-semibold text-slate-900 mb-1">Add Students</h3>
+                  <p className="text-sm text-slate-600">Upload student profiles with academic info</p>
                 </div>
-                <h3 className="font-medium text-gray-900 mb-2">Add Students</h3>
-                <p className="text-sm text-gray-600">Upload student profiles with academic info</p>
-              </div>
-              
-              <div className="flex flex-col items-center text-center p-4 rounded-lg bg-green-50">
-                <div className="w-10 h-10 bg-green-600 rounded-full flex items-center justify-center mb-3">
-                  <span className="text-white font-semibold text-sm">2</span>
+                
+                <div className="flex flex-col items-center text-center p-4 rounded-lg bg-emerald-50 border border-emerald-100">
+                  <div className="w-12 h-12 bg-emerald-500 rounded-full flex items-center justify-center mb-3">
+                    <span className="text-white font-bold">2</span>
+                  </div>
+                  <h3 className="font-semibold text-slate-900 mb-1">Create Questions</h3>
+                  <p className="text-sm text-slate-600">Build your question bank with templates</p>
                 </div>
-                <h3 className="font-medium text-gray-900 mb-2">Create Questions</h3>
-                <p className="text-sm text-gray-600">Build your question bank with templates</p>
-              </div>
-              
-              <div className="flex flex-col items-center text-center p-4 rounded-lg bg-purple-50">
-                <div className="w-10 h-10 bg-purple-600 rounded-full flex items-center justify-center mb-3">
-                  <span className="text-white font-semibold text-sm">3</span>
+                
+                <div className="flex flex-col items-center text-center p-4 rounded-lg bg-purple-50 border border-purple-100">
+                  <div className="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center mb-3">
+                    <span className="text-white font-bold">3</span>
+                  </div>
+                  <h3 className="font-semibold text-slate-900 mb-1">Generate Groups</h3>
+                  <p className="text-sm text-slate-600">Let AI cluster students automatically</p>
                 </div>
-                <h3 className="font-medium text-gray-900 mb-2">Generate Groups</h3>
-                <p className="text-sm text-gray-600">Let AI cluster students automatically</p>
-              </div>
-              
-              <div className="flex flex-col items-center text-center p-4 rounded-lg bg-orange-50">
-                <div className="w-10 h-10 bg-orange-600 rounded-full flex items-center justify-center mb-3">
-                  <span className="text-white font-semibold text-sm">4</span>
+                
+                <div className="flex flex-col items-center text-center p-4 rounded-lg bg-amber-50 border border-amber-100">
+                  <div className="w-12 h-12 bg-amber-500 rounded-full flex items-center justify-center mb-3">
+                    <span className="text-white font-bold">4</span>
+                  </div>
+                  <h3 className="font-semibold text-slate-900 mb-1">Build Exams</h3>
+                  <p className="text-sm text-slate-600">Create personalized assessments</p>
                 </div>
-                <h3 className="font-medium text-gray-900 mb-2">Build Exams</h3>
-                <p className="text-sm text-gray-600">Create personalized assessments</p>
               </div>
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+        </motion.div>
       </div>
     </div>
   )

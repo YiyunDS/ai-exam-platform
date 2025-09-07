@@ -135,7 +135,7 @@ const QuestionComparisonView: React.FC<QuestionComparisonViewProps> = ({
               return (
                 <div 
                   key={groupId} 
-                  className="border rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
+                  className="border rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300"
                   style={{
                     borderTopColor: group.color,
                     borderTopWidth: '4px'

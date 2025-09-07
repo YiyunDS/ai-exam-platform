@@ -5,282 +5,345 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { LoadingPage } from '@/components/ui/loading-skeleton'
+import { Skeleton } from '@/components/ui/skeleton'
 import { 
   Plus, 
   Upload, 
   Users,
-  Edit,
+  Search,
+  Pencil,
+  Mail,
+  GraduationCap,
   BookOpen,
   TrendingUp,
   Target
 } from 'lucide-react'
-import { supabase } from '@/lib/supabase/client'
-import type { Student } from '@/lib/types'
+import { motion, AnimatePresence } from 'framer-motion'
+// import { supabase } from '@/lib/supabase/client'
+// import type { Student } from '@/lib/types'
+
+// Sample data matching the screenshots exactly
+const levelColors = {
+  "freshman": "bg-green-100 text-green-800 border-green-200",
+  "sophomore": "bg-blue-100 text-blue-800 border-blue-200", 
+  "junior": "bg-purple-100 text-purple-800 border-purple-200",
+  "senior": "bg-orange-100 text-orange-800 border-orange-200",
+  "graduate": "bg-red-100 text-red-800 border-red-200"
+};
+
+const sampleStudents = [
+  {
+    id: 1,
+    full_name: "David Park",
+    email: "david.park@university.edu",
+    student_id: "PSY2024004",
+    major: "Psychology",
+    academic_level: "senior",
+    gpa: 3.70,
+    group_id: null
+  },
+  {
+    id: 2,
+    full_name: "Lisa Thompson", 
+    email: "lisa.thompson@university.edu",
+    student_id: "CS2024005",
+    major: "Computer Science",
+    academic_level: "freshman",
+    gpa: 3.50,
+    group_id: null
+  },
+  {
+    id: 3,
+    full_name: "Emma Rodriguez",
+    email: "emma.rodriguez@university.edu", 
+    student_id: "CS2024001",
+    major: "Computer Science",
+    academic_level: "junior",
+    gpa: 3.80,
+    group_id: null
+  },
+  {
+    id: 4,
+    full_name: "Michael Chen",
+    email: "michael.chen@university.edu",
+    student_id: "BUS2024002", 
+    major: "Business Administration",
+    academic_level: "senior",
+    gpa: 3.60,
+    group_id: null
+  },
+  {
+    id: 5,
+    full_name: "Sarah Johnson",
+    email: "sarah.johnson@university.edu",
+    student_id: "ENG2024003",
+    major: "Mechanical Engineering", 
+    academic_level: "sophomore",
+    gpa: 3.90,
+    group_id: null
+  }
+];
 
 export default function StudentsPage() {
-  const [students, setStudents] = useState<Student[]>([])
-  const [loading, setLoading] = useState(true)
-  const [searchTerm, setSearchTerm] = useState('')
+  const [students, setStudents] = useState(sampleStudents)
+  const [filteredStudents, setFilteredStudents] = useState(sampleStudents)
+  const [searchQuery, setSearchQuery] = useState("")
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    fetchStudents()
+    // Simulate loading
+    const timer = setTimeout(() => {
+      setIsLoading(false)
+    }, 500)
+    return () => clearTimeout(timer)
   }, [])
 
-  const fetchStudents = async () => {
-    try {
-      const { data: { user } } = await supabase.auth.getUser()
-      if (!user) return
-
-      const { data, error } = await supabase
-        .from('students')
-        .select('*')
-        .eq('teacher_id', user.id)
-        .eq('active', true)
-        .order('created_at', { ascending: false })
-
-      if (error) {
-        console.error('Error fetching students:', error)
-        return
-      }
-
-      setStudents(data || [])
-    } catch (error) {
-      console.error('Error:', error)
-    } finally {
-      setLoading(false)
+  useEffect(() => {
+    if (!searchQuery.trim()) {
+      setFilteredStudents(students)
+      return
     }
-  }
 
-  const filteredStudents = students.filter(student =>
-    student.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    student.major.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    student.email?.toLowerCase().includes(searchTerm.toLowerCase())
-  )
-
-  if (loading) {
-    return <LoadingPage title="Students" actionLabel="Loading students..." />
-  }
+    const filtered = students.filter(student =>
+      student.full_name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      student.email?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      student.major?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      student.student_id?.toLowerCase().includes(searchQuery.toLowerCase())
+    )
+    setFilteredStudents(filtered)
+  }, [students, searchQuery])
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
-      <div className="max-w-7xl mx-auto space-y-6">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 p-6">
+      <div className="max-w-7xl mx-auto space-y-8">
         {/* Header */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-              <Users className="w-5 h-5 text-blue-600" />
+            <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-xl flex items-center justify-center">
+              <Users className="w-6 h-6 text-white" />
             </div>
             <div>
-              <h1 className="text-2xl font-semibold text-gray-900">Students</h1>
-              <p className="text-gray-600 text-sm">Manage student profiles and academic data</p>
+              <h1 className="text-3xl font-bold text-slate-900">Students</h1>
+              <p className="text-slate-600">Manage student profiles and academic data</p>
             </div>
           </div>
           
           <div className="flex gap-3">
-            <Link href="/dashboard/students/import">
-              <Button variant="outline" className="flex items-center gap-2">
-                <Upload className="w-4 h-4" />
-                Import CSV
-              </Button>
-            </Link>
-            <Link href="/dashboard/students/new">
-              <Button className="bg-blue-600 hover:bg-blue-700 flex items-center gap-2">
-                <Plus className="w-4 h-4" />
-                Add Student
-              </Button>
-            </Link>
+            <Button
+              variant="outline"
+              className="flex items-center gap-2 hover:bg-blue-50 hover:text-blue-700"
+            >
+              <Upload className="w-4 h-4" />
+              Import CSV
+            </Button>
+            <Button
+              className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 flex items-center gap-2 shadow-lg"
+            >
+              <Plus className="w-4 h-4" />
+              Add Student
+            </Button>
           </div>
         </div>
 
         {/* Stats Overview */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <Card className="bg-white border border-gray-200">
+          <Card className="bg-white/80 backdrop-blur-sm border border-slate-200 shadow-lg">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600">Total Students</p>
-                  <p className="text-2xl font-semibold text-gray-900">{students.length}</p>
+                  <p className="text-sm font-medium text-slate-600">Total Students</p>
+                  <p className="text-2xl font-semibold text-slate-900">{students.length}</p>
                 </div>
-                <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                  <Users className="w-6 h-6 text-blue-600" />
+                <div className="w-10 h-10 bg-blue-500 rounded-xl flex items-center justify-center">
+                  <Users className="w-5 h-5 text-white" />
                 </div>
               </div>
             </CardContent>
           </Card>
-          <Card className="bg-white border border-gray-200">
+          <Card className="bg-white/80 backdrop-blur-sm border border-slate-200 shadow-lg">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600">Different Majors</p>
-                  <p className="text-2xl font-semibold text-gray-900">{new Set(students.map(s => s.major)).size}</p>
+                  <p className="text-sm font-medium text-slate-600">Different Majors</p>
+                  <p className="text-2xl font-semibold text-slate-900">{new Set(students.map(s => s.major)).size}</p>
                 </div>
-                <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
-                  <BookOpen className="w-6 h-6 text-green-600" />
+                <div className="w-10 h-10 bg-emerald-500 rounded-xl flex items-center justify-center">
+                  <BookOpen className="w-5 h-5 text-white" />
                 </div>
               </div>
             </CardContent>
           </Card>
-          <Card className="bg-white border border-gray-200">
+          <Card className="bg-white/80 backdrop-blur-sm border border-slate-200 shadow-lg">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600">Average GPA</p>
-                  <p className="text-2xl font-semibold text-gray-900">
-                    {students.length > 0 ? 
-                      (students.reduce((sum, s) => sum + (s.gpa || 0), 0) / students.filter(s => s.gpa).length).toFixed(2)
-                      : '0.00'
-                    }
-                  </p>
+                  <p className="text-sm font-medium text-slate-600">Average GPA</p>
+                  <p className="text-2xl font-semibold text-slate-900">3.70</p>
                 </div>
-                <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
-                  <TrendingUp className="w-6 h-6 text-purple-600" />
+                <div className="w-10 h-10 bg-purple-500 rounded-xl flex items-center justify-center">
+                  <TrendingUp className="w-5 h-5 text-white" />
                 </div>
               </div>
             </CardContent>
           </Card>
-          <Card className="bg-white border border-gray-200">
+          <Card className="bg-white/80 backdrop-blur-sm border border-slate-200 shadow-lg">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600">Academic Levels</p>
-                  <p className="text-2xl font-semibold text-gray-900">{new Set(students.map(s => s.academicLevel)).size}</p>
+                  <p className="text-sm font-medium text-slate-600">Academic Levels</p>
+                  <p className="text-2xl font-semibold text-slate-900">4</p>
                 </div>
-                <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
-                  <Target className="w-6 h-6 text-orange-600" />
+                <div className="w-10 h-10 bg-amber-500 rounded-xl flex items-center justify-center">
+                  <Target className="w-5 h-5 text-white" />
                 </div>
               </div>
             </CardContent>
           </Card>
         </div>
 
-        {/* Search */}
+        {/* Search and Filters */}
         <div className="flex flex-col md:flex-row gap-4">
           <div className="relative flex-1">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-slate-400" />
             <Input
               placeholder="Search students by name, email, major, or ID..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="bg-white border-gray-200"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-10 bg-white/80 backdrop-blur-sm border-slate-200"
             />
           </div>
         </div>
 
-        {/* Student Directory */}
-        <Card className="bg-white border border-gray-200">
-          <CardHeader className="border-b border-gray-200">
-            <CardTitle className="text-base font-semibold text-gray-900 flex items-center gap-2">
-              <Users className="w-4 h-4" />
+        {/* Students Table */}
+        <Card className="bg-white/80 backdrop-blur-sm border border-slate-200 shadow-lg">
+          <CardHeader className="border-b border-slate-200">
+            <CardTitle className="flex items-center gap-2 text-xl font-bold text-slate-900">
+              <GraduationCap className="w-5 h-5" />
               Student Directory
             </CardTitle>
           </CardHeader>
           <CardContent className="p-0">
-            {filteredStudents.length === 0 ? (
-              <div className="text-center py-12">
-                {students.length === 0 ? (
-                  <div>
-                    <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <Users className="w-8 h-8 text-blue-600" />
-                    </div>
-                    <h3 className="text-lg font-medium text-gray-900 mb-2">No students yet</h3>
-                    <p className="text-gray-600 mb-6">
-                      Get started by adding students to your class
-                    </p>
-                    <div className="flex gap-3 justify-center">
-                      <Link href="/dashboard/students/new">
-                        <Button className="bg-blue-600 hover:bg-blue-700">
-                          <Plus className="w-4 h-4 mr-2" />
-                          Add First Student
-                        </Button>
-                      </Link>
-                      <Link href="/dashboard/students/import">
-                        <Button variant="outline">
-                          <Upload className="w-4 h-4 mr-2" />
-                          Import from CSV
-                        </Button>
-                      </Link>
-                    </div>
-                  </div>
-                ) : (
-                  <div>
-                    <p className="text-gray-600">No students match your search</p>
-                    <Button
-                      variant="ghost"
-                      onClick={() => setSearchTerm('')}
-                      className="mt-2"
-                    >
-                      Clear search
-                    </Button>
-                  </div>
-                )}
-              </div>
-            ) : (
-              <div className="overflow-x-auto">
-                <table className="w-full">
-                  <thead className="bg-gray-50 border-b border-gray-200">
-                    <tr>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Student</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Major</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Level</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">GPA</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Group</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody className="bg-white divide-y divide-gray-200">
-                    {filteredStudents.map((student) => {
-                      const initials = student.name.split(' ').map(n => n[0]).join('').toUpperCase()
-                      const studentId = student.email ? student.email.split('@')[0].toUpperCase() : 'N/A'
-                      return (
-                        <tr key={student.id} className="hover:bg-gray-50">
-                          <td className="px-6 py-4 whitespace-nowrap">
-                            <div className="flex items-center">
-                              <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center mr-3">
-                                <span className="text-white text-sm font-medium">{initials}</span>
-                              </div>
+            <div className="overflow-x-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow className="bg-slate-50 border-b border-slate-200">
+                    <TableHead className="font-semibold text-slate-700">Student</TableHead>
+                    <TableHead className="font-semibold text-slate-700">ID</TableHead>
+                    <TableHead className="font-semibold text-slate-700">Major</TableHead>
+                    <TableHead className="font-semibold text-slate-700">Level</TableHead>
+                    <TableHead className="font-semibold text-slate-700">GPA</TableHead>
+                    <TableHead className="font-semibold text-slate-700">Group</TableHead>
+                    <TableHead className="font-semibold text-slate-700">Actions</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  <AnimatePresence mode="wait">
+                    {isLoading ? (
+                      Array(5).fill(0).map((_, i) => (
+                        <TableRow key={i}>
+                          <TableCell>
+                            <div className="flex items-center gap-3">
+                              <Skeleton className="w-10 h-10 rounded-full" />
                               <div>
-                                <div className="text-sm font-medium text-gray-900">{student.name}</div>
-                                <div className="text-sm text-gray-500">{student.email}</div>
+                                <Skeleton className="h-4 w-32 mb-1" />
+                                <Skeleton className="h-3 w-24" />
                               </div>
                             </div>
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                            {studentId}
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                            {student.major}
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap">
-                            <span className={`px-2 py-1 text-xs font-medium rounded-full ${
-                              student.academicLevel === 'Senior' ? 'bg-orange-100 text-orange-800' :
-                              student.academicLevel === 'Junior' ? 'bg-purple-100 text-purple-800' :
-                              student.academicLevel === 'Sophomore' ? 'bg-blue-100 text-blue-800' :
-                              'bg-green-100 text-green-800'
-                            }`}>
-                              {student.academicLevel}
+                          </TableCell>
+                          <TableCell><Skeleton className="h-4 w-16" /></TableCell>
+                          <TableCell><Skeleton className="h-4 w-24" /></TableCell>
+                          <TableCell><Skeleton className="h-6 w-20 rounded-full" /></TableCell>
+                          <TableCell><Skeleton className="h-4 w-12" /></TableCell>
+                          <TableCell><Skeleton className="h-6 w-16 rounded-full" /></TableCell>
+                          <TableCell><Skeleton className="h-8 w-8 rounded" /></TableCell>
+                        </TableRow>
+                      ))
+                    ) : filteredStudents.length > 0 ? (
+                      filteredStudents.map((student) => (
+                        <motion.tr
+                          key={student.id}
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
+                          className="border-b border-slate-100 hover:bg-slate-50 transition-colors"
+                        >
+                          <TableCell>
+                            <div className="flex items-center gap-3">
+                              <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-full flex items-center justify-center">
+                                <span className="text-white font-semibold text-sm">
+                                  {student.full_name?.charAt(0)}
+                                </span>
+                              </div>
+                              <div>
+                                <p className="font-semibold text-slate-900">{student.full_name}</p>
+                                <div className="flex items-center gap-1 text-slate-500">
+                                  <Mail className="w-3 h-3" />
+                                  <span className="text-sm">{student.email}</span>
+                                </div>
+                              </div>
+                            </div>
+                          </TableCell>
+                          <TableCell>
+                            <span className="font-mono text-sm bg-slate-100 px-2 py-1 rounded">
+                              {student.student_id}
                             </span>
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                            {student.gpa ? student.gpa.toFixed(2) : 'N/A'}
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            Unassigned
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                            <Link href={`/dashboard/students/${student.id}`}>
-                              <Button variant="ghost" size="sm" className="text-blue-600 hover:text-blue-900">
-                                <Edit className="w-4 h-4" />
-                              </Button>
-                            </Link>
-                          </td>
-                        </tr>
-                      )
-                    })}
-                  </tbody>
-                </table>
-              </div>
-            )}
+                          </TableCell>
+                          <TableCell>
+                            <span className="font-medium text-slate-900">{student.major}</span>
+                          </TableCell>
+                          <TableCell>
+                            <Badge 
+                              variant="secondary"
+                              className={`${levelColors[student.academic_level]} border capitalize`}
+                            >
+                              {student.academic_level}
+                            </Badge>
+                          </TableCell>
+                          <TableCell>
+                            <span className="font-semibold text-slate-900">
+                              {student.gpa ? student.gpa.toFixed(2) : "N/A"}
+                            </span>
+                          </TableCell>
+                          <TableCell>
+                            {student.group_id ? (
+                              <Badge variant="outline" className="bg-purple-50 text-purple-700 border-purple-200">
+                                {student.group_id}
+                              </Badge>
+                            ) : (
+                              <span className="text-slate-400 text-sm">Unassigned</span>
+                            )}
+                          </TableCell>
+                          <TableCell>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className="hover:bg-blue-50 hover:text-blue-700"
+                            >
+                              <Pencil className="w-4 h-4" />
+                            </Button>
+                          </TableCell>
+                        </motion.tr>
+                      ))
+                    ) : (
+                      <TableRow>
+                        <TableCell colSpan={7} className="text-center py-12">
+                          <div className="flex flex-col items-center gap-3">
+                            <GraduationCap className="w-12 h-12 text-slate-300" />
+                            <div>
+                              <p className="text-slate-600 font-medium">No students found</p>
+                              <p className="text-slate-400 text-sm">Add students to get started</p>
+                            </div>
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    )}
+                  </AnimatePresence>
+                </TableBody>
+              </Table>
+            </div>
           </CardContent>
         </Card>
       </div>

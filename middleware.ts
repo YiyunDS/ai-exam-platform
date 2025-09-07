@@ -1,13 +1,23 @@
+import { createMiddlewareClient } from '@supabase/auth-helpers-nextjs'
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
 export async function middleware(req: NextRequest) {
-  // Completely bypass all middleware for now to debug navigation issues
-  console.log('Middleware hit for:', req.nextUrl.pathname)
-  return NextResponse.next()
+  const res = NextResponse.next()
+  const supabase = createMiddlewareClient({ req, res })
+
+  const {
+    data: { session },
+  } = await supabase.auth.getSession()
+
+  // If trying to access dashboard without authentication, redirect to login
+  if (req.nextUrl.pathname.startsWith('/dashboard') && !session) {
+    return NextResponse.redirect(new URL('/login', req.url))
+  }
+
+  return res
 }
 
 export const config = {
-  matcher: []
-  // Completely disabled for debugging
+  matcher: ['/dashboard/:path*']
 }

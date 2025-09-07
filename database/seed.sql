@@ -7,37 +7,18 @@ INSERT INTO teachers (id, email, name, institution) VALUES
 ('550e8400-e29b-41d4-a716-446655440001', 'jane.smith@college.edu', 'Dr. Jane Smith', 'Business College'),
 ('550e8400-e29b-41d4-a716-446655440002', 'john.doe@institute.edu', 'Prof. John Doe', 'Technical Institute');
 
--- Insert sample students for Demo Teacher
-INSERT INTO students (teacher_id, name, email, major, academic_level, gpa, career_interests) VALUES
--- Finance Students
-('550e8400-e29b-41d4-a716-446655440000', 'Alice Johnson', 'alice.j@student.edu', 'Finance', 'Junior', 3.5, ARRAY['Investment Banking', 'Financial Analysis']),
-('550e8400-e29b-41d4-a716-446655440000', 'Bob Chen', 'bob.c@student.edu', 'Finance', 'Junior', 3.7, ARRAY['Portfolio Management', 'Risk Assessment']),
-('550e8400-e29b-41d4-a716-446655440000', 'Carol Davis', 'carol.d@student.edu', 'Finance', 'Senior', 3.8, ARRAY['Investment Banking', 'Corporate Finance']),
-('550e8400-e29b-41d4-a716-446655440000', 'David Brown', 'david.b@student.edu', 'Finance', 'Senior', 3.4, ARRAY['Financial Planning', 'Investment Analysis']),
-('550e8400-e29b-41d4-a716-446655440000', 'Emma Wilson', 'emma.w@student.edu', 'Finance', 'Junior', 3.6, ARRAY['Risk Management', 'Investment Banking']),
+-- Insert sample students for Demo Teacher (matching screenshots)
+INSERT INTO students (teacher_id, name, email, major, academic_level, gpa, career_interests, student_id) VALUES
+-- Screenshot Students - exact match to design guide
+('550e8400-e29b-41d4-a716-446655440000', 'David Park', 'david.park@university.edu', 'Psychology', 'Senior', 3.70, ARRAY['Clinical Psychology', 'Research'], 'PSY2024004'),
+('550e8400-e29b-41d4-a716-446655440000', 'Lisa Thompson', 'lisa.thompson@university.edu', 'Computer Science', 'Freshman', 3.50, ARRAY['Software Engineering', 'AI Development'], 'CS2024005'),
+('550e8400-e29b-41d4-a716-446655440000', 'Emma Rodriguez', 'emma.rodriguez@university.edu', 'Computer Science', 'Junior', 3.80, ARRAY['Machine Learning', 'Data Science'], 'CS2024001'),
+('550e8400-e29b-41d4-a716-446655440000', 'Michael Chen', 'michael.chen@university.edu', 'Business Administration', 'Senior', 3.60, ARRAY['Management Consulting', 'Strategy'], 'BUS2024002'),
+('550e8400-e29b-41d4-a716-446655440000', 'Sarah Johnson', 'sarah.johnson@university.edu', 'Mechanical Engineering', 'Sophomore', 3.90, ARRAY['Automotive Engineering', 'Design'], 'ENG2024003'),
 
--- Marketing Students
-('550e8400-e29b-41d4-a716-446655440000', 'Frank Miller', 'frank.m@student.edu', 'Marketing', 'Sophomore', 3.2, ARRAY['Digital Marketing', 'Brand Management']),
-('550e8400-e29b-41d4-a716-446655440000', 'Grace Lee', 'grace.l@student.edu', 'Marketing', 'Sophomore', 3.4, ARRAY['Social Media Marketing', 'Market Research']),
-('550e8400-e29b-41d4-a716-446655440000', 'Henry Garcia', 'henry.g@student.edu', 'Marketing', 'Junior', 3.3, ARRAY['Digital Marketing', 'Customer Analytics']),
-('550e8400-e29b-41d4-a716-446655440000', 'Isabel Rodriguez', 'isabel.r@student.edu', 'Marketing', 'Junior', 3.5, ARRAY['Brand Strategy', 'Content Marketing']),
-('550e8400-e29b-41d4-a716-446655440000', 'Jack Thompson', 'jack.t@student.edu', 'Marketing', 'Senior', 3.1, ARRAY['Marketing Analytics', 'Campaign Management']),
-
--- Computer Science Students
-('550e8400-e29b-41d4-a716-446655440000', 'Kate Anderson', 'kate.a@student.edu', 'Computer Science', 'Freshman', 3.9, ARRAY['Software Engineering', 'Data Science']),
-('550e8400-e29b-41d4-a716-446655440000', 'Liam O''Connor', 'liam.o@student.edu', 'Computer Science', 'Sophomore', 3.6, ARRAY['Machine Learning', 'Web Development']),
-('550e8400-e29b-41d4-a716-446655440000', 'Maya Patel', 'maya.p@student.edu', 'Computer Science', 'Sophomore', 3.8, ARRAY['Data Science', 'AI Research']),
-('550e8400-e29b-41d4-a716-446655440000', 'Noah Kim', 'noah.k@student.edu', 'Computer Science', 'Junior', 3.7, ARRAY['Software Engineering', 'Systems Architecture']),
-
--- Economics Students
-('550e8400-e29b-41d4-a716-446655440000', 'Olivia White', 'olivia.w@student.edu', 'Economics', 'Freshman', 3.3, ARRAY['Economic Research', 'Policy Analysis']),
-('550e8400-e29b-41d4-a716-446655440000', 'Paul Martin', 'paul.m@student.edu', 'Economics', 'Sophomore', 3.2, ARRAY['Economic Modeling', 'Market Analysis']),
-('550e8400-e29b-41d4-a716-446655440000', 'Quinn Taylor', 'quinn.t@student.edu', 'Economics', 'Junior', 3.5, ARRAY['Economic Consulting', 'Data Analysis']),
-
--- Business Administration Students
-('550e8400-e29b-41d4-a716-446655440000', 'Rachel Green', 'rachel.g@student.edu', 'Business Administration', 'Freshman', 3.0, ARRAY['Operations Management', 'Strategic Planning']),
-('550e8400-e29b-41d4-a716-446655440000', 'Sam Wilson', 'sam.w@student.edu', 'Business Administration', 'Sophomore', 3.4, ARRAY['Project Management', 'Business Analytics']),
-('550e8400-e29b-41d4-a716-446655440000', 'Tina Clark', 'tina.c@student.edu', 'Business Administration', 'Senior', 3.6, ARRAY['Management Consulting', 'Operations Management']);
+-- Additional students for diversity (can be removed in production)
+('550e8400-e29b-41d4-a716-446655440000', 'Frank Miller', 'frank.m@student.edu', 'Marketing', 'Sophomore', 3.2, ARRAY['Digital Marketing', 'Brand Management'], 'MKT2024001'),
+('550e8400-e29b-41d4-a716-446655440000', 'Kate Anderson', 'kate.a@student.edu', 'Computer Science', 'Freshman', 3.9, ARRAY['Software Engineering', 'Data Science'], 'CS2024002');
 
 -- Create sample clusters for Demo Teacher
 INSERT INTO clusters (teacher_id, name, description, characteristics, is_auto_generated) VALUES
