@@ -6,10 +6,11 @@ import ModernHeader from './ModernHeader'
 export default function ConditionalHeader() {
   const pathname = usePathname()
   
-  // Don't show ModernHeader on dashboard pages - they have their own layout
-  if (pathname?.startsWith('/dashboard')) {
-    return null
-  }
-  
+  // For debugging: Always show ModernHeader so navigation links are visible
   return <ModernHeader />
+  
+  // TODO: Later we can conditionally hide on dashboard pages
+  // if (pathname?.startsWith('/dashboard')) {
+  //   return null
+  // }
 }
