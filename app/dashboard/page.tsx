@@ -55,7 +55,7 @@ export default function Dashboard() {
   }, [])
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 p-6">
+    <div className="p-6">
       <div className="max-w-7xl mx-auto space-y-8">
         {/* Header */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
@@ -63,7 +63,7 @@ export default function Dashboard() {
             <motion.h1 
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="text-3xl font-bold text-slate-900"
+              className="text-2xl md:text-3xl font-bold text-slate-900"
             >
               Welcome to ExamAI
             </motion.h1>
@@ -119,19 +119,18 @@ export default function Dashboard() {
           >
             <Card className="bg-gradient-to-br from-indigo-500 to-purple-600 border-0 text-white overflow-hidden relative">
               <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full transform translate-x-8 -translate-y-8" />
-              <CardHeader className="relative">
+              <CardContent className="p-6 relative">
                 <div className="flex items-center gap-3 mb-4">
                   <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
                     <Brain className="w-7 h-7 text-white" />
                   </div>
                   <div>
-                    <CardTitle className="text-xl font-bold text-white">AI-Powered Personalization</CardTitle>
+                    <h3 className="text-xl font-bold text-white">AI-Powered Personalization</h3>
                     <p className="text-indigo-100 text-sm">Make every exam relevant to each student</p>
                   </div>
                 </div>
-              </CardHeader>
-              <CardContent className="relative">
-                <div className="space-y-4">
+                
+                <div className="space-y-3 mb-6">
                   <div className="flex items-center gap-3">
                     <Target className="w-5 h-5 text-indigo-200" />
                     <span className="text-indigo-100">Smart student clustering by academic profile</span>
@@ -145,14 +144,15 @@ export default function Dashboard() {
                     <span className="text-indigo-100">Consistent difficulty across all versions</span>
                   </div>
                 </div>
-                <div className="flex gap-3 mt-6">
+                
+                <div className="flex gap-3">
                   <Link href="/dashboard/students">
-                    <Button variant="secondary" className="bg-white/20 border-white/30 text-white hover:bg-white/30">
+                    <Button variant="secondary" className="bg-white/20 border-white/30 text-white hover:bg-white/30 transition-all">
                       Manage Students
                     </Button>
                   </Link>
                   <Link href="/dashboard/groups">
-                    <Button variant="secondary" className="bg-white/20 border-white/30 text-white hover:bg-white/30">
+                    <Button variant="secondary" className="bg-white/20 border-white/30 text-white hover:bg-white/30 transition-all">
                       View Groups
                     </Button>
                   </Link>
@@ -167,75 +167,75 @@ export default function Dashboard() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.3 }}
           >
-            <Card className="bg-white/80 backdrop-blur-sm border border-slate-200 h-fit">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-lg font-bold text-slate-900">
-                  <Clock className="w-5 h-5" />
-                  Recent Activity
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-50 transition-colors">
-                  <div className="w-10 h-10 bg-emerald-500 rounded-full flex items-center justify-center">
-                    <HelpCircle className="w-5 h-5 text-white" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="font-medium text-slate-900 text-sm truncate">New question: Algorithm Complexity Anal...</p>
-                    <div className="flex items-center gap-2 mt-1">
-                      <span className="text-xs bg-slate-100 text-slate-700 px-2 py-1 rounded">Computer Science</span>
-                      <span className="text-xs text-slate-500">Sep 6</span>
+            <Card className="bg-white/80 backdrop-blur-sm border border-slate-200 hover:shadow-lg transition-all duration-300 h-fit">
+              <CardContent className="p-6">
+                <div className="flex items-center gap-2 mb-4">
+                  <Clock className="w-5 h-5 text-slate-600" />
+                  <h3 className="text-lg font-bold text-slate-900">Recent Activity</h3>
+                </div>
+                <div className="space-y-3">
+                  <div className="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-50 transition-colors">
+                    <div className="w-10 h-10 bg-emerald-500 rounded-full flex items-center justify-center">
+                      <HelpCircle className="w-5 h-5 text-white" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="font-medium text-slate-900 text-sm truncate">New question: Algorithm Complexity Anal...</p>
+                      <div className="flex items-center gap-2 mt-1">
+                        <span className="text-xs bg-slate-100 text-slate-700 px-2 py-1 rounded-full">Computer Science</span>
+                        <span className="text-xs text-slate-500">Sep 6</span>
+                      </div>
                     </div>
                   </div>
-                </div>
-                
-                <div className="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-50 transition-colors">
-                  <div className="w-10 h-10 bg-emerald-500 rounded-full flex items-center justify-center">
-                    <HelpCircle className="w-5 h-5 text-white" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="font-medium text-slate-900 text-sm truncate">New question: Market Strategy Developm...</p>
-                    <div className="flex items-center gap-2 mt-1">
-                      <span className="text-xs bg-slate-100 text-slate-700 px-2 py-1 rounded">Business Administration</span>
-                      <span className="text-xs text-slate-500">Sep 6</span>
+                  
+                  <div className="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-50 transition-colors">
+                    <div className="w-10 h-10 bg-emerald-500 rounded-full flex items-center justify-center">
+                      <HelpCircle className="w-5 h-5 text-white" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="font-medium text-slate-900 text-sm truncate">New question: Market Strategy Developm...</p>
+                      <div className="flex items-center gap-2 mt-1">
+                        <span className="text-xs bg-slate-100 text-slate-700 px-2 py-1 rounded-full">Business Administration</span>
+                        <span className="text-xs text-slate-500">Sep 6</span>
+                      </div>
                     </div>
                   </div>
-                </div>
-                
-                <div className="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-50 transition-colors">
-                  <div className="w-10 h-10 bg-emerald-500 rounded-full flex items-center justify-center">
-                    <HelpCircle className="w-5 h-5 text-white" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="font-medium text-slate-900 text-sm truncate">New question: Stress Analysis Problem</p>
-                    <div className="flex items-center gap-2 mt-1">
-                      <span className="text-xs bg-slate-100 text-slate-700 px-2 py-1 rounded">Mechanical Engineering</span>
-                      <span className="text-xs text-slate-500">Sep 6</span>
+                  
+                  <div className="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-50 transition-colors">
+                    <div className="w-10 h-10 bg-emerald-500 rounded-full flex items-center justify-center">
+                      <HelpCircle className="w-5 h-5 text-white" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="font-medium text-slate-900 text-sm truncate">New question: Stress Analysis Problem</p>
+                      <div className="flex items-center gap-2 mt-1">
+                        <span className="text-xs bg-slate-100 text-slate-700 px-2 py-1 rounded-full">Mechanical Engineering</span>
+                        <span className="text-xs text-slate-500">Sep 6</span>
+                      </div>
                     </div>
                   </div>
-                </div>
-                
-                <div className="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-50 transition-colors">
-                  <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center">
-                    <Users className="w-5 h-5 text-white" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="font-medium text-slate-900 text-sm truncate">New student: Lisa Thompson</p>
-                    <div className="flex items-center gap-2 mt-1">
-                      <span className="text-xs bg-slate-100 text-slate-700 px-2 py-1 rounded">Computer Science</span>
-                      <span className="text-xs text-slate-500">Sep 6</span>
+                  
+                  <div className="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-50 transition-colors">
+                    <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center">
+                      <Users className="w-5 h-5 text-white" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="font-medium text-slate-900 text-sm truncate">New student: Lisa Thompson</p>
+                      <div className="flex items-center gap-2 mt-1">
+                        <span className="text-xs bg-slate-100 text-slate-700 px-2 py-1 rounded-full">Computer Science</span>
+                        <span className="text-xs text-slate-500">Sep 6</span>
+                      </div>
                     </div>
                   </div>
-                </div>
-                
-                <div className="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-50 transition-colors">
-                  <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center">
-                    <Users className="w-5 h-5 text-white" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="font-medium text-slate-900 text-sm truncate">New student: David Park</p>
-                    <div className="flex items-center gap-2 mt-1">
-                      <span className="text-xs bg-slate-100 text-slate-700 px-2 py-1 rounded">Psychology</span>
-                      <span className="text-xs text-slate-500">Sep 6</span>
+                  
+                  <div className="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-50 transition-colors">
+                    <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center">
+                      <Users className="w-5 h-5 text-white" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="font-medium text-slate-900 text-sm truncate">New student: David Park</p>
+                      <div className="flex items-center gap-2 mt-1">
+                        <span className="text-xs bg-slate-100 text-slate-700 px-2 py-1 rounded-full">Psychology</span>
+                        <span className="text-xs text-slate-500">Sep 6</span>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -250,12 +250,12 @@ export default function Dashboard() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
         >
-          <Card className="bg-white/80 backdrop-blur-sm border border-slate-200">
-            <CardHeader>
-              <CardTitle className="text-xl font-bold text-slate-900">Getting Started</CardTitle>
-              <p className="text-slate-600">Follow these steps to create your first personalized exam</p>
-            </CardHeader>
-            <CardContent>
+          <Card className="bg-white/80 backdrop-blur-sm border border-slate-200 hover:shadow-lg transition-all duration-300">
+            <CardContent className="p-6">
+              <div className="mb-6">
+                <h3 className="text-xl font-bold text-slate-900 mb-2">Getting Started</h3>
+                <p className="text-slate-600">Follow these steps to create your first personalized exam</p>
+              </div>
               <div className="grid md:grid-cols-4 gap-4">
                 <div className="flex flex-col items-center text-center p-4 rounded-lg bg-blue-50 border border-blue-100">
                   <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center mb-3">

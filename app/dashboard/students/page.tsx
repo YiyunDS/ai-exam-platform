@@ -117,7 +117,7 @@ export default function StudentsPage() {
   }, [students, searchQuery])
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 p-6">
+    <div className="p-6">
       <div className="max-w-7xl mx-auto space-y-8">
         {/* Header */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
@@ -150,55 +150,58 @@ export default function StudentsPage() {
 
         {/* Stats Overview */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <Card className="bg-white/80 backdrop-blur-sm border border-slate-200 shadow-lg">
+          <Card className="bg-white/80 backdrop-blur-sm border border-slate-200 hover:shadow-lg transition-all duration-300">
             <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-slate-600">Total Students</p>
-                  <p className="text-2xl font-semibold text-slate-900">{students.length}</p>
+              <div className="flex items-center justify-between mb-4">
+                <div className="w-12 h-12 bg-blue-500 rounded-xl flex items-center justify-center shadow-lg">
+                  <Users className="w-6 h-6 text-white" />
                 </div>
-                <div className="w-10 h-10 bg-blue-500 rounded-xl flex items-center justify-center">
-                  <Users className="w-5 h-5 text-white" />
-                </div>
+              </div>
+              <div>
+                <p className="text-sm font-medium text-slate-600 mb-1">Total Students</p>
+                <p className="text-3xl font-bold text-slate-900">{students.length}</p>
               </div>
             </CardContent>
           </Card>
-          <Card className="bg-white/80 backdrop-blur-sm border border-slate-200 shadow-lg">
+          
+          <Card className="bg-white/80 backdrop-blur-sm border border-slate-200 hover:shadow-lg transition-all duration-300">
             <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-slate-600">Different Majors</p>
-                  <p className="text-2xl font-semibold text-slate-900">{new Set(students.map(s => s.major)).size}</p>
+              <div className="flex items-center justify-between mb-4">
+                <div className="w-12 h-12 bg-emerald-500 rounded-xl flex items-center justify-center shadow-lg">
+                  <BookOpen className="w-6 h-6 text-white" />
                 </div>
-                <div className="w-10 h-10 bg-emerald-500 rounded-xl flex items-center justify-center">
-                  <BookOpen className="w-5 h-5 text-white" />
-                </div>
+              </div>
+              <div>
+                <p className="text-sm font-medium text-slate-600 mb-1">Different Majors</p>
+                <p className="text-3xl font-bold text-slate-900">{new Set(students.map(s => s.major)).size}</p>
               </div>
             </CardContent>
           </Card>
-          <Card className="bg-white/80 backdrop-blur-sm border border-slate-200 shadow-lg">
+          
+          <Card className="bg-white/80 backdrop-blur-sm border border-slate-200 hover:shadow-lg transition-all duration-300">
             <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-slate-600">Average GPA</p>
-                  <p className="text-2xl font-semibold text-slate-900">3.70</p>
+              <div className="flex items-center justify-between mb-4">
+                <div className="w-12 h-12 bg-purple-500 rounded-xl flex items-center justify-center shadow-lg">
+                  <TrendingUp className="w-6 h-6 text-white" />
                 </div>
-                <div className="w-10 h-10 bg-purple-500 rounded-xl flex items-center justify-center">
-                  <TrendingUp className="w-5 h-5 text-white" />
-                </div>
+              </div>
+              <div>
+                <p className="text-sm font-medium text-slate-600 mb-1">Average GPA</p>
+                <p className="text-3xl font-bold text-slate-900">3.70</p>
               </div>
             </CardContent>
           </Card>
-          <Card className="bg-white/80 backdrop-blur-sm border border-slate-200 shadow-lg">
+          
+          <Card className="bg-white/80 backdrop-blur-sm border border-slate-200 hover:shadow-lg transition-all duration-300">
             <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-slate-600">Academic Levels</p>
-                  <p className="text-2xl font-semibold text-slate-900">4</p>
+              <div className="flex items-center justify-between mb-4">
+                <div className="w-12 h-12 bg-amber-500 rounded-xl flex items-center justify-center shadow-lg">
+                  <Target className="w-6 h-6 text-white" />
                 </div>
-                <div className="w-10 h-10 bg-amber-500 rounded-xl flex items-center justify-center">
-                  <Target className="w-5 h-5 text-white" />
-                </div>
+              </div>
+              <div>
+                <p className="text-sm font-medium text-slate-600 mb-1">Academic Levels</p>
+                <p className="text-3xl font-bold text-slate-900">4</p>
               </div>
             </CardContent>
           </Card>
@@ -218,14 +221,12 @@ export default function StudentsPage() {
         </div>
 
         {/* Students Table */}
-        <Card className="bg-white/80 backdrop-blur-sm border border-slate-200 shadow-lg">
-          <CardHeader className="border-b border-slate-200">
-            <CardTitle className="flex items-center gap-2 text-xl font-bold text-slate-900">
-              <GraduationCap className="w-5 h-5" />
-              Student Directory
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="p-0">
+        <Card className="bg-white/80 backdrop-blur-sm border border-slate-200 hover:shadow-lg transition-all duration-300">
+          <CardContent className="p-6">
+            <div className="flex items-center gap-2 mb-4">
+              <GraduationCap className="w-5 h-5 text-slate-600" />
+              <h3 className="text-lg font-bold text-slate-900">Student Directory</h3>
+            </div>
             <div className="overflow-x-auto">
               <Table>
                 <TableHeader>

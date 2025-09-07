@@ -96,30 +96,30 @@ export default function QuestionsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 p-6">
+    <div className="p-6">
       <div className="max-w-7xl mx-auto space-y-8">
         {/* Header */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-xl flex items-center justify-center">
+            <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-xl flex items-center justify-center shadow-lg">
               <HelpCircle className="w-6 h-6 text-white" />
             </div>
             <div>
               <motion.h1 
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="text-3xl font-bold text-slate-900"
+                className="text-2xl md:text-3xl font-bold text-slate-900"
               >
-                Questions
+                Question Bank
               </motion.h1>
-              <p className="text-slate-600 mt-1">Create and manage your question bank</p>
+              <p className="text-slate-600 mt-1">Create and manage your examination questions</p>
             </div>
           </div>
           
           <div className="flex gap-3">
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
               <Link href="/dashboard/questions/new">
-                <Button className="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 flex items-center gap-2 shadow-lg">
+                <Button className="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 flex items-center gap-2 shadow-lg transition-all">
                   <Plus className="w-4 h-4" />
                   Create Question
                 </Button>
@@ -132,13 +132,13 @@ export default function QuestionsPage() {
         <QuestionStats questions={questions} isLoading={loading} />
 
         {/* Search and Filters */}
-        <Card className="bg-white/80 backdrop-blur-sm border border-slate-200">
-          <CardContent className="pt-6">
+        <Card className="bg-white/80 backdrop-blur-sm border border-slate-200 hover:shadow-lg transition-all duration-300">
+          <CardContent className="p-6">
             <div className="flex flex-col lg:flex-row gap-4">
               <div className="relative flex-1">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-slate-400" />
                 <Input
-                  placeholder="Search questions by title, content, or subject..."
+                  placeholder="Search questions by title, content, subject, or tags..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="pl-10 bg-white/80 backdrop-blur-sm border-slate-200"
@@ -158,16 +158,19 @@ export default function QuestionsPage() {
                     ))}
                   </select>
                 </div>
-                <select
-                  value={selectedDifficulty}
-                  onChange={(e) => setSelectedDifficulty(e.target.value)}
-                  className="h-10 px-3 rounded-lg border border-slate-200 bg-white/80 backdrop-blur-sm text-sm min-w-[140px]"
-                >
-                  <option value="">All Difficulties</option>
-                  {difficulties.map(difficulty => (
-                    <option key={difficulty} value={difficulty}>{difficulty}</option>
-                  ))}
-                </select>
+                <div className="relative">
+                  <Layers className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-slate-400" />
+                  <select
+                    value={selectedDifficulty}
+                    onChange={(e) => setSelectedDifficulty(e.target.value)}
+                    className="h-10 pl-10 pr-8 rounded-lg border border-slate-200 bg-white/80 backdrop-blur-sm text-sm min-w-[140px] appearance-none"
+                  >
+                    <option value="">All Levels</option>
+                    {difficulties.map(difficulty => (
+                      <option key={difficulty} value={difficulty}>{difficulty}</option>
+                    ))}
+                  </select>
+                </div>
               </div>
             </div>
           </CardContent>
@@ -237,28 +240,39 @@ export default function QuestionsPage() {
                 transition={{ delay: index * 0.05 }}
                 whileHover={{ y: -2 }}
               >
-                <Card className="bg-white/80 backdrop-blur-sm border border-slate-200 hover:shadow-lg transition-all duration-200">
+                <Card className="bg-white/80 backdrop-blur-sm border border-slate-200 hover:shadow-lg transition-all duration-300 group">
                   <CardContent className="p-6">
                     <div className="flex items-start justify-between">
                       <div className="flex-1">
-                        <div className="flex items-center gap-3 mb-3">
-                          <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-xl flex items-center justify-center shadow-lg">
+                        <div className="flex items-center gap-3 mb-4">
+                          <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform duration-300">
                             <span className="text-white text-xl">{getQuestionTypeIcon(question.questionType)}</span>
                           </div>
                           <div className="flex-1">
-                            <h3 className="font-semibold text-xl text-slate-900">{question.title}</h3>
+                            <h3 className="font-bold text-xl text-slate-900">{question.title}</h3>
                             <div className="flex items-center gap-3 text-sm text-slate-600 mt-1">
                               <span className="font-medium">{question.subject}</span>
                               <span>•</span>
-                              <Badge className={`${
-                                question.difficultyLevel === 'Easy' ? 'bg-emerald-100 text-emerald-700 border-emerald-300' :
-                                question.difficultyLevel === 'Medium' ? 'bg-amber-100 text-amber-700 border-amber-300' :
-                                'bg-red-100 text-red-700 border-red-300'
-                              }`}>
+                              <Badge 
+                                variant={
+                                  question.difficultyLevel === 'Easy' ? 'beginner' :
+                                  question.difficultyLevel === 'Medium' ? 'intermediate' :
+                                  'advanced'
+                                }
+                              >
                                 {question.difficultyLevel}
                               </Badge>
                               <span>•</span>
-                              <span>{question.questionType}</span>
+                              <Badge 
+                                variant={
+                                  question.questionType === 'Multiple Choice' ? 'multiple-choice' :
+                                  question.questionType === 'Short Answer' ? 'short-answer' :
+                                  question.questionType === 'Essay' ? 'essay' :
+                                  'problem-solving'
+                                }
+                              >
+                                {question.questionType}
+                              </Badge>
                             </div>
                           </div>
                         </div>
