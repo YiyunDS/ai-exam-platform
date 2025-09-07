@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react'
-import { UserCheck, Sparkles, Refresh, Plus } from 'lucide-react'
+import { UserCheck, Sparkles, RotateCcw, Plus } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -88,7 +88,7 @@ export default function GroupsPage() {
           
           <div className="flex gap-3">
             <Button variant="outline" className="flex items-center gap-2 hover:bg-purple-50 hover:text-purple-700">
-              <Refresh className="w-4 h-4" />
+              <RotateCcw className="w-4 h-4" />
               Refresh
             </Button>
             <Button className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 flex items-center gap-2 shadow-lg">
