@@ -2,7 +2,9 @@
 
 import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { useRouter } from 'next/navigation'
 import { X, Mail, Lock, User, Eye, EyeOff, Github, Chrome, Apple } from 'lucide-react'
+import { supabase } from '@/lib/supabase/client'
 
 interface AuthModalProps {
   isOpen: boolean
@@ -13,12 +15,15 @@ interface AuthModalProps {
 export default function AuthModal({ isOpen, onClose, defaultMode = 'login' }: AuthModalProps) {
   const [mode, setMode] = useState<'login' | 'signup'>(defaultMode)
   const [showPassword, setShowPassword] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
   const [formData, setFormData] = useState({
     email: '',
     password: '',
     name: '',
     confirmPassword: ''
   })
+  const router = useRouter()
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData(prev => ({
@@ -27,15 +32,55 @@ export default function AuthModal({ isOpen, onClose, defaultMode = 'login' }: Au
     }))
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    console.log('Form submitted:', { mode, formData })
-    // Add authentication logic here
+    setLoading(true)
+    setError(null)
+
+    try {
+      if (mode === 'signup') {
+        if (formData.password !== formData.confirmPassword) {
+          setError('Passwords do not match')
+          return
+        }
+        
+        const { error } = await supabase.auth.signUp({
+          email: formData.email,
+          password: formData.password,
+          options: {
+            data: {
+              full_name: formData.name,
+            }
+          }
+        })
+        
+        if (error) throw error
+        
+        // For now, redirect to dashboard after signup
+        onClose()
+        router.push('/dashboard')
+      } else {
+        const { error } = await supabase.auth.signInWithPassword({
+          email: formData.email,
+          password: formData.password,
+        })
+        
+        if (error) throw error
+        
+        onClose()
+        router.push('/dashboard')
+      }
+    } catch (error: any) {
+      setError(error.message || 'An error occurred')
+    } finally {
+      setLoading(false)
+    }
   }
 
   const switchMode = () => {
     setMode(mode === 'login' ? 'signup' : 'login')
     setFormData({ email: '', password: '', name: '', confirmPassword: '' })
+    setError(null)
   }
 
   return (
@@ -175,6 +220,12 @@ export default function AuthModal({ isOpen, onClose, defaultMode = 'login' }: Au
                   )}
                 </div>
 
+                {error && (
+                  <div className="mt-4 p-3 bg-red-500/20 border border-red-500/30 rounded-lg">
+                    <p className="text-sm text-red-400">{error}</p>
+                  </div>
+                )}
+
                 {mode === 'login' && (
                   <div className="flex justify-between items-center mt-4 mb-6">
                     <label className="flex items-center space-x-2 text-sm text-white/70">
@@ -189,11 +240,12 @@ export default function AuthModal({ isOpen, onClose, defaultMode = 'login' }: Au
 
                 <motion.button
                   type="submit"
-                  className="auth-submit-btn w-full"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
+                  disabled={loading}
+                  className="auth-submit-btn w-full disabled:opacity-50 disabled:cursor-not-allowed"
+                  whileHover={!loading ? { scale: 1.02 } : {}}
+                  whileTap={!loading ? { scale: 0.98 } : {}}
                 >
-                  {mode === 'login' ? 'Sign In' : 'Create Account'}
+                  {loading ? 'Please wait...' : (mode === 'login' ? 'Sign In' : 'Create Account')}
                 </motion.button>
               </form>
 

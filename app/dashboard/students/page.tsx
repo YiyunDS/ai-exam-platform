@@ -2,23 +2,21 @@
 
 import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { motion, AnimatePresence } from 'framer-motion'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { LoadingPage } from '@/components/ui/loading-skeleton'
-import { Badge } from '@/components/ui/badge'
 import { 
   Plus, 
   Upload, 
-  Search, 
   Users,
   Edit,
-  Mail
+  BookOpen,
+  TrendingUp,
+  Target
 } from 'lucide-react'
 import { supabase } from '@/lib/supabase/client'
 import type { Student } from '@/lib/types'
-import StudentStats from '@/components/students/StudentStats'
 
 export default function StudentsPage() {
   const [students, setStudents] = useState<Student[]>([])
@@ -65,197 +63,226 @@ export default function StudentsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 p-6">
-      <div className="max-w-7xl mx-auto space-y-8">
+    <div className="min-h-screen bg-gray-50 p-6">
+      <div className="max-w-7xl mx-auto space-y-6">
         {/* Header */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-xl flex items-center justify-center">
-              <Users className="w-6 h-6 text-white" />
+            <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+              <Users className="w-5 h-5 text-blue-600" />
             </div>
             <div>
-              <motion.h1 
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="text-3xl font-bold text-slate-900"
-              >
-                Students
-              </motion.h1>
-              <p className="text-slate-600 mt-1">Manage student profiles and academic data</p>
+              <h1 className="text-2xl font-semibold text-gray-900">Students</h1>
+              <p className="text-gray-600 text-sm">Manage student profiles and academic data</p>
             </div>
           </div>
           
           <div className="flex gap-3">
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Link href="/dashboard/students/import">
-                <Button
-                  variant="outline"
-                  className="flex items-center gap-2 hover:bg-blue-50 hover:text-blue-700"
-                >
-                  <Upload className="w-4 h-4" />
-                  Import CSV
-                </Button>
-              </Link>
-            </motion.div>
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Link href="/dashboard/students/new">
-                <Button className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 flex items-center gap-2 shadow-lg">
-                  <Plus className="w-4 h-4" />
-                  Add Student
-                </Button>
-              </Link>
-            </motion.div>
+            <Link href="/dashboard/students/import">
+              <Button variant="outline" className="flex items-center gap-2">
+                <Upload className="w-4 h-4" />
+                Import CSV
+              </Button>
+            </Link>
+            <Link href="/dashboard/students/new">
+              <Button className="bg-blue-600 hover:bg-blue-700 flex items-center gap-2">
+                <Plus className="w-4 h-4" />
+                Add Student
+              </Button>
+            </Link>
           </div>
         </div>
 
         {/* Stats Overview */}
-        <StudentStats students={students} isLoading={loading} />
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <Card className="bg-white border border-gray-200">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-gray-600">Total Students</p>
+                  <p className="text-2xl font-semibold text-gray-900">{students.length}</p>
+                </div>
+                <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                  <Users className="w-6 h-6 text-blue-600" />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+          <Card className="bg-white border border-gray-200">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-gray-600">Different Majors</p>
+                  <p className="text-2xl font-semibold text-gray-900">{new Set(students.map(s => s.major)).size}</p>
+                </div>
+                <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                  <BookOpen className="w-6 h-6 text-green-600" />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+          <Card className="bg-white border border-gray-200">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-gray-600">Average GPA</p>
+                  <p className="text-2xl font-semibold text-gray-900">
+                    {students.length > 0 ? 
+                      (students.reduce((sum, s) => sum + (s.gpa || 0), 0) / students.filter(s => s.gpa).length).toFixed(2)
+                      : '0.00'
+                    }
+                  </p>
+                </div>
+                <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                  <TrendingUp className="w-6 h-6 text-purple-600" />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+          <Card className="bg-white border border-gray-200">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-gray-600">Academic Levels</p>
+                  <p className="text-2xl font-semibold text-gray-900">{new Set(students.map(s => s.academicLevel)).size}</p>
+                </div>
+                <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+                  <Target className="w-6 h-6 text-orange-600" />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
 
-        {/* Search and Filters */}
+        {/* Search */}
         <div className="flex flex-col md:flex-row gap-4">
           <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-slate-400" />
             <Input
-              placeholder="Search students by name, major, email, or ID..."
+              placeholder="Search students by name, email, major, or ID..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10 bg-white/80 backdrop-blur-sm border-slate-200"
+              className="bg-white border-gray-200"
             />
           </div>
         </div>
 
-        {/* Students List */}
-        {filteredStudents.length === 0 ? (
-          <Card className="bg-white/80 backdrop-blur-sm border border-slate-200">
-            <CardContent className="text-center py-12">
-              {students.length === 0 ? (
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <div className="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                    <Users className="w-10 h-10 text-blue-600" />
-                  </div>
-                  <h3 className="text-xl font-semibold text-slate-900 mb-2">No students yet</h3>
-                  <p className="text-slate-600 mb-6 max-w-md mx-auto">
-                    Get started by adding students to your class or importing from a CSV file
-                  </p>
-                  <div className="flex gap-3 justify-center">
-                    <Link href="/dashboard/students/new">
-                      <Button className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700">
-                        <Plus className="w-4 h-4 mr-2" />
-                        Add First Student
-                      </Button>
-                    </Link>
-                    <Link href="/dashboard/students/import">
-                      <Button variant="outline" className="hover:bg-blue-50 hover:text-blue-700">
-                        <Upload className="w-4 h-4 mr-2" />
-                        Import from CSV
-                      </Button>
-                    </Link>
-                  </div>
-                </motion.div>
-              ) : (
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                >
-                  <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Search className="w-8 h-8 text-slate-500" />
-                  </div>
-                  <h3 className="text-lg font-medium text-slate-900 mb-2">No students found</h3>
-                  <p className="text-slate-600 mb-4">No students match your search criteria</p>
-                  <Button
-                    variant="ghost"
-                    onClick={() => setSearchTerm('')}
-                    className="hover:bg-blue-50 hover:text-blue-700"
-                  >
-                    Clear search
-                  </Button>
-                </motion.div>
-              )}
-            </CardContent>
-          </Card>
-        ) : (
-          <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="grid gap-6"
-          >
-            {filteredStudents.map((student, index) => (
-              <motion.div
-                key={student.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.05 }}
-                whileHover={{ y: -2 }}
-              >
-                <Card className="bg-white/80 backdrop-blur-sm border border-slate-200 hover:shadow-lg transition-all duration-200">
-                  <CardContent className="p-6">
-                    <div className="flex items-center justify-between">
-                      <div className="flex-1">
-                        <div className="flex items-center gap-4">
-                          <div className="w-14 h-14 rounded-full bg-gradient-to-br from-blue-500 to-indigo-500 flex items-center justify-center shadow-lg">
-                            <span className="text-white font-semibold text-lg">
-                              {student.name.split(' ').map(n => n[0]).join('').toUpperCase()}
-                            </span>
-                          </div>
-                          <div className="flex-1">
-                            <h3 className="font-semibold text-xl text-slate-900">{student.name}</h3>
-                            <div className="flex items-center gap-4 text-sm text-slate-600 mt-1">
-                              <span className="font-medium">{student.major}</span>
-                              <span>•</span>
-                              <span>{student.academicLevel}</span>
-                              {student.gpa && (
-                                <>
-                                  <span>•</span>
-                                  <span className="text-emerald-600 font-medium">GPA: {student.gpa.toFixed(2)}</span>
-                                </>
-                              )}
-                            </div>
-                            {student.email && (
-                              <div className="flex items-center gap-2 text-sm text-slate-500 mt-2">
-                                <Mail className="w-4 h-4" />
-                                <span>{student.email}</span>
-                              </div>
-                            )}
-                            {student.careerInterests.length > 0 && (
-                              <div className="flex gap-2 mt-3 flex-wrap">
-                                {student.careerInterests.slice(0, 3).map((interest, idx) => (
-                                  <Badge key={idx} className="bg-blue-50 text-blue-700 border-blue-200 hover:bg-blue-100">
-                                    {interest}
-                                  </Badge>
-                                ))}
-                                {student.careerInterests.length > 3 && (
-                                  <Badge className="bg-slate-100 text-slate-600 border-slate-200">
-                                    +{student.careerInterests.length - 3} more
-                                  </Badge>
-                                )}
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                      <div className="flex gap-2">
-                        <Link href={`/dashboard/students/${student.id}`}>
-                          <Button 
-                            variant="outline" 
-                            size="sm"
-                            className="hover:bg-blue-50 hover:text-blue-700 hover:border-blue-300"
-                          >
-                            <Edit className="w-4 h-4 mr-2" />
-                            Edit
-                          </Button>
-                        </Link>
-                      </div>
+        {/* Student Directory */}
+        <Card className="bg-white border border-gray-200">
+          <CardHeader className="border-b border-gray-200">
+            <CardTitle className="text-base font-semibold text-gray-900 flex items-center gap-2">
+              <Users className="w-4 h-4" />
+              Student Directory
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="p-0">
+            {filteredStudents.length === 0 ? (
+              <div className="text-center py-12">
+                {students.length === 0 ? (
+                  <div>
+                    <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <Users className="w-8 h-8 text-blue-600" />
                     </div>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
-          </motion.div>
-        )}
+                    <h3 className="text-lg font-medium text-gray-900 mb-2">No students yet</h3>
+                    <p className="text-gray-600 mb-6">
+                      Get started by adding students to your class
+                    </p>
+                    <div className="flex gap-3 justify-center">
+                      <Link href="/dashboard/students/new">
+                        <Button className="bg-blue-600 hover:bg-blue-700">
+                          <Plus className="w-4 h-4 mr-2" />
+                          Add First Student
+                        </Button>
+                      </Link>
+                      <Link href="/dashboard/students/import">
+                        <Button variant="outline">
+                          <Upload className="w-4 h-4 mr-2" />
+                          Import from CSV
+                        </Button>
+                      </Link>
+                    </div>
+                  </div>
+                ) : (
+                  <div>
+                    <p className="text-gray-600">No students match your search</p>
+                    <Button
+                      variant="ghost"
+                      onClick={() => setSearchTerm('')}
+                      className="mt-2"
+                    >
+                      Clear search
+                    </Button>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead className="bg-gray-50 border-b border-gray-200">
+                    <tr>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Student</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Major</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Level</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">GPA</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Group</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody className="bg-white divide-y divide-gray-200">
+                    {filteredStudents.map((student) => {
+                      const initials = student.name.split(' ').map(n => n[0]).join('').toUpperCase()
+                      const studentId = student.email ? student.email.split('@')[0].toUpperCase() : 'N/A'
+                      return (
+                        <tr key={student.id} className="hover:bg-gray-50">
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <div className="flex items-center">
+                              <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center mr-3">
+                                <span className="text-white text-sm font-medium">{initials}</span>
+                              </div>
+                              <div>
+                                <div className="text-sm font-medium text-gray-900">{student.name}</div>
+                                <div className="text-sm text-gray-500">{student.email}</div>
+                              </div>
+                            </div>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                            {studentId}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                            {student.major}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <span className={`px-2 py-1 text-xs font-medium rounded-full ${
+                              student.academicLevel === 'Senior' ? 'bg-orange-100 text-orange-800' :
+                              student.academicLevel === 'Junior' ? 'bg-purple-100 text-purple-800' :
+                              student.academicLevel === 'Sophomore' ? 'bg-blue-100 text-blue-800' :
+                              'bg-green-100 text-green-800'
+                            }`}>
+                              {student.academicLevel}
+                            </span>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                            {student.gpa ? student.gpa.toFixed(2) : 'N/A'}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            Unassigned
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                            <Link href={`/dashboard/students/${student.id}`}>
+                              <Button variant="ghost" size="sm" className="text-blue-600 hover:text-blue-900">
+                                <Edit className="w-4 h-4" />
+                              </Button>
+                            </Link>
+                          </td>
+                        </tr>
+                      )
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </CardContent>
+        </Card>
       </div>
     </div>
   )
