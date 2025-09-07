@@ -1,0 +1,70 @@
+
+{
+  "name": "Question",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "Question title or topic"
+    },
+    "generic_text": {
+      "type": "string",
+      "description": "Original generic question text"
+    },
+    "subject": {
+      "type": "string",
+      "description": "Academic subject area"
+    },
+    "difficulty_level": {
+      "type": "string",
+      "enum": [
+        "beginner",
+        "intermediate",
+        "advanced"
+      ],
+      "description": "Question difficulty level"
+    },
+    "question_type": {
+      "type": "string",
+      "enum": [
+        "multiple_choice",
+        "short_answer",
+        "essay",
+        "problem_solving"
+      ],
+      "description": "Type of question format"
+    },
+    "options": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Answer options for multiple choice questions"
+    },
+    "correct_answer": {
+      "type": "string",
+      "description": "Correct answer or answer key"
+    },
+    "learning_objectives": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Learning objectives this question addresses"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Tags for categorizing questions"
+    }
+  },
+  "required": [
+    "title",
+    "generic_text",
+    "subject",
+    "difficulty_level",
+    "question_type"
+  ]
+}

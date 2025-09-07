@@ -1,10 +1,9 @@
-'use client'
-
-import React, { useState, useEffect } from 'react'
-import { motion } from 'framer-motion'
-import Link from 'next/link'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
+import React, { useState, useEffect } from "react";
+import { Student, Question, StudentGroup, Exam } from "@/entities/all";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
+import { createPageUrl } from "@/utils";
 import { 
   Users, 
   HelpCircle, 
@@ -15,10 +14,12 @@ import {
   Plus,
   Brain,
   Target
-} from 'lucide-react'
+} from "lucide-react";
+import { motion } from "framer-motion";
 
-import StatsCard from '@/components/dashboard/StatsCard'
-import QuickActions from '@/components/dashboard/QuickActions'
+import StatsCard from "../components/dashboard/StatsCard";
+import RecentActivity from "../components/dashboard/RecentActivity";
+import QuickActions from "../components/dashboard/QuickActions";
 
 export default function Dashboard() {
   const [stats, setStats] = useState({
@@ -26,30 +27,34 @@ export default function Dashboard() {
     questions: 0,
     groups: 0,
     exams: 0
-  })
-  const [isLoading, setIsLoading] = useState(true)
+  });
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Simulate loading dashboard data
-    const loadDashboardData = async () => {
-      try {
-        // Simulate API call
-        await new Promise(resolve => setTimeout(resolve, 1000))
-        setStats({
-          students: 125,
-          questions: 48,
-          groups: 6,
-          exams: 12
-        })
-      } catch (error) {
-        console.error('Error loading dashboard data:', error)
-      } finally {
-        setIsLoading(false)
-      }
-    }
+    loadDashboardData();
+  }, []);
 
-    loadDashboardData()
-  }, [])
+  const loadDashboardData = async () => {
+    try {
+      const [students, questions, groups, exams] = await Promise.all([
+        Student.list(),
+        Question.list(),
+        StudentGroup.list(),
+        Exam.list()
+      ]);
+
+      setStats({
+        students: students.length,
+        questions: questions.length,
+        groups: groups.length,
+        exams: exams.length
+      });
+    } catch (error) {
+      console.error("Error loading dashboard data:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 p-6">
@@ -143,12 +148,12 @@ export default function Dashboard() {
                   </div>
                 </div>
                 <div className="flex gap-3 mt-6">
-                  <Link href="/dashboard/students">
+                  <Link to={createPageUrl("Students")}>
                     <Button variant="secondary" className="bg-white/20 border-white/30 text-white hover:bg-white/30">
                       Manage Students
                     </Button>
                   </Link>
-                  <Link href="/dashboard/groups">
+                  <Link to={createPageUrl("Groups")}>
                     <Button variant="secondary" className="bg-white/20 border-white/30 text-white hover:bg-white/30">
                       View Groups
                     </Button>
@@ -164,54 +169,7 @@ export default function Dashboard() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.3 }}
           >
-            <Card className="bg-white/80 backdrop-blur-sm border border-slate-200">
-              <CardHeader>
-                <CardTitle className="text-lg font-bold text-slate-900">Recent Activity</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                      <Users className="w-4 h-4 text-blue-600" />
-                    </div>
-                    <div className="flex-1">
-                      <p className="text-sm font-medium text-slate-900">New student added</p>
-                      <p className="text-xs text-slate-500">2 minutes ago</p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 bg-emerald-100 rounded-full flex items-center justify-center">
-                      <HelpCircle className="w-4 h-4 text-emerald-600" />
-                    </div>
-                    <div className="flex-1">
-                      <p className="text-sm font-medium text-slate-900">Question created</p>
-                      <p className="text-xs text-slate-500">1 hour ago</p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center">
-                      <Brain className="w-4 h-4 text-purple-600" />
-                    </div>
-                    <div className="flex-1">
-                      <p className="text-sm font-medium text-slate-900">AI groups generated</p>
-                      <p className="text-xs text-slate-500">3 hours ago</p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 bg-amber-100 rounded-full flex items-center justify-center">
-                      <FileText className="w-4 h-4 text-amber-600" />
-                    </div>
-                    <div className="flex-1">
-                      <p className="text-sm font-medium text-slate-900">Exam exported</p>
-                      <p className="text-xs text-slate-500">1 day ago</p>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+            <RecentActivity />
           </motion.div>
         </div>
 
@@ -265,5 +223,5 @@ export default function Dashboard() {
         </motion.div>
       </div>
     </div>
-  )
+  );
 }

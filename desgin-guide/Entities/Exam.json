@@ -1,0 +1,76 @@
+{
+  "name": "Exam",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "Exam title"
+    },
+    "description": {
+      "type": "string",
+      "description": "Exam description and instructions"
+    },
+    "subject": {
+      "type": "string",
+      "description": "Subject area for the exam"
+    },
+    "duration_minutes": {
+      "type": "integer",
+      "description": "Exam duration in minutes"
+    },
+    "total_points": {
+      "type": "number",
+      "description": "Total points possible"
+    },
+    "target_group_id": {
+      "type": "string",
+      "description": "Student group this exam is designed for"
+    },
+    "question_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "IDs of questions included in this exam"
+    },
+    "customized_questions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "question_id": {
+            "type": "string"
+          },
+          "customized_text": {
+            "type": "string"
+          },
+          "personalization_context": {
+            "type": "string"
+          }
+        }
+      },
+      "description": "AI-customized versions of questions for this group"
+    },
+    "exam_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Scheduled exam date"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "published",
+        "active",
+        "completed"
+      ],
+      "default": "draft",
+      "description": "Current exam status"
+    }
+  },
+  "required": [
+    "title",
+    "subject",
+    "duration_minutes"
+  ]
+}

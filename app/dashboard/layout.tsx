@@ -1,21 +1,18 @@
 'use client'
 
 import Link from 'next/link'
-import Image from 'next/image'
 import { usePathname } from 'next/navigation'
-import { Bell, Home, FileText, BarChart2, Settings, User, Menu, X, Brain, Users, Activity, Sparkles } from 'lucide-react'
+import { Bell, Home, FileText, BarChart2, Settings, User, Menu, Brain, Users, Activity, Sparkles, GraduationCap, HelpCircle, UserCheck, Target } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 
 const sidebarNavItems = [
   { href: '/dashboard', label: 'Dashboard', icon: Home },
-  { href: '/dashboard/generator', label: 'AI Generator', icon: Brain },
-  { href: '/dashboard/exams', label: 'My Exams', icon: FileText },
-  { href: '/dashboard/questions', label: 'Question Bank', icon: BarChart2 },
-  { href: '/dashboard/groups', label: 'Student Groups', icon: Users },
-  { href: '/dashboard/analytics', label: 'Analytics', icon: Activity },
-  { href: '/dashboard/settings', label: 'Settings', icon: Settings },
+  { href: '/dashboard/students', label: 'Students', icon: Users },
+  { href: '/dashboard/questions', label: 'Questions', icon: HelpCircle },
+  { href: '/dashboard/groups', label: 'Student Groups', icon: UserCheck },
+  { href: '/dashboard/exams', label: 'Exams', icon: FileText },
 ]
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
@@ -23,111 +20,120 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
 
   const Sidebar = () => (
-    <aside className={`sidebar ${isSidebarOpen ? 'open' : ''} bg-gradient-to-b from-gray-900 to-gray-800 text-white flex flex-col relative overflow-hidden md:w-64 md:flex-shrink-0 md:relative md:translate-x-0 md:z-auto`}>
-      {/* Background orb for sidebar */}
-      <div className="absolute top-20 right-0 w-32 h-32 bg-gradient-to-br from-blue-500/20 to-purple-600/20 rounded-full blur-3xl"></div>
-      
-      <div className="h-20 flex items-center px-6 gap-3 border-b border-white/10">
-        <motion.div
-          className="p-2 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg"
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-        >
-          <Brain className="h-6 w-6 text-white" />
-        </motion.div>
-        <span className="text-xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-          ExamGen AI
-        </span>
+    <aside className={`fixed left-0 top-0 z-40 h-screen w-64 transform transition-transform duration-300 ease-in-out bg-white/95 backdrop-blur-sm border-r border-slate-200 ${
+      isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
+    } md:translate-x-0 md:static md:h-auto`}>
+      {/* Header */}
+      <div className="border-b border-slate-200 p-6">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg">
+            <GraduationCap className="w-6 h-6 text-white" />
+          </div>
+          <div>
+            <h2 className="font-bold text-slate-900 text-lg">ExamAI</h2>
+            <p className="text-xs text-slate-500 font-medium">Personalized Assessments</p>
+          </div>
+        </div>
       </div>
-      
-      <nav className="flex-1 px-4 py-6 space-y-2 relative z-10">
-        {sidebarNavItems.map(({ href, label, icon: Icon }, index) => {
-          const isActive = pathname === href
-          return (
-            <motion.div
-              key={href}
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: index * 0.1 }}
-            >
-              <Link
-                href={href}
-                className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 group ${
-                  isActive
-                    ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg'
-                    : 'text-gray-300 hover:bg-white/10 hover:text-white'
-                }`}
-              >
-                <Icon className={`h-5 w-5 transition-transform duration-300 ${
-                  isActive ? '' : 'group-hover:scale-110'
-                }`} />
-                <span className="font-medium">{label}</span>
-                {isActive && (
-                  <motion.div
-                    className="ml-auto w-2 h-2 bg-white rounded-full"
-                    layoutId="activeIndicator"
-                  />
-                )}
-              </Link>
-            </motion.div>
-          )
-        })}
-      </nav>
-      
-      {/* User profile section */}
-      <div className="px-4 py-4 border-t border-white/10">
-        <div className="flex items-center gap-3 p-3 rounded-xl bg-white/5 hover:bg-white/10 transition-colors cursor-pointer">
-          <div className="w-10 h-10 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center">
-            <User className="h-5 w-5 text-white" />
+
+      {/* Navigation */}
+      <div className="p-4">
+        <div className="mb-8">
+          <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider px-3 py-3">
+            Platform
+          </p>
+          <nav className="space-y-1">
+            {sidebarNavItems.map((item, index) => {
+              const isActive = pathname === item.href
+              const Icon = item.icon
+              return (
+                <motion.div
+                  key={item.href}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                >
+                  <Link
+                    href={item.href}
+                    className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group mb-1 ${
+                      isActive 
+                        ? 'bg-blue-50 text-blue-700 shadow-sm' 
+                        : 'text-slate-600 hover:bg-blue-50 hover:text-blue-700'
+                    }`}
+                  >
+                    <Icon className={`w-5 h-5 transition-transform duration-200 group-hover:scale-110 ${
+                      isActive ? 'text-blue-600' : ''
+                    }`} />
+                    <span className="font-medium">{item.label}</span>
+                  </Link>
+                </motion.div>
+              )
+            })}
+          </nav>
+        </div>
+
+        {/* AI Features Section */}
+        <div className="mt-8">
+          <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider px-3 py-3">
+            AI Features
+          </p>
+          <div className="px-4 py-3 bg-gradient-to-r from-amber-50 to-orange-50 rounded-xl border border-amber-100">
+            <div className="flex items-center gap-3 mb-2">
+              <Sparkles className="w-5 h-5 text-amber-600" />
+              <span className="font-semibold text-amber-900 text-sm">Smart Clustering</span>
+            </div>
+            <p className="text-xs text-amber-700 leading-relaxed">
+              AI automatically groups students by academic profile and interests
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Footer */}
+      <div className="absolute bottom-0 left-0 right-0 border-t border-slate-200 p-6">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 bg-gradient-to-br from-slate-200 to-slate-300 rounded-full flex items-center justify-center">
+            <span className="text-slate-700 font-semibold text-sm">T</span>
           </div>
           <div className="flex-1 min-w-0">
-            <div className="text-sm font-medium text-white truncate">Dr. Smith</div>
-            <div className="text-xs text-gray-400 truncate">Professor</div>
+            <p className="font-semibold text-slate-900 text-sm truncate">Teacher</p>
+            <p className="text-xs text-slate-500 truncate">Create personalized exams</p>
           </div>
-          <Bell className="h-4 w-4 text-gray-400" />
         </div>
       </div>
     </aside>
   )
 
   return (
-    <div className="app-layout bg-gray-50 relative overflow-hidden">
-      {/* Background pattern */}
-      <div className="absolute inset-0 bg-grid-white/[0.02] bg-[size:60px_60px] pointer-events-none"></div>
-      
+    <div className="min-h-screen flex w-full bg-gradient-to-br from-slate-50 to-blue-50">
       {/* Mobile Header */}
-      <header className="mobile-header md:hidden">
-        <div className="flex items-center gap-3">
-          <div className="p-2 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg">
-            <Brain className="h-5 w-5 text-white" />
-          </div>
-          <span className="text-lg font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-            ExamGen AI
-          </span>
+      <header className="md:hidden fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-sm border-b border-slate-200 px-6 py-4">
+        <div className="flex items-center gap-4">
+          <button 
+            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+            className="hover:bg-slate-100 p-2 rounded-lg transition-colors duration-200"
+          >
+            <Menu className="h-5 w-5" />
+          </button>
+          <h1 className="text-xl font-bold text-slate-900">ExamAI</h1>
         </div>
-        <button 
-          className="mobile-menu-button"
-          onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-        >
-          <Menu className="h-5 w-5" />
-        </button>
       </header>
 
       {/* Overlay for mobile */}
-      <div 
-        className={`overlay ${isSidebarOpen ? 'active' : ''} md:hidden`}
-        onClick={() => setIsSidebarOpen(false)}
-      ></div>
+      {isSidebarOpen && (
+        <div 
+          className="fixed inset-0 z-30 bg-black/50 md:hidden"
+          onClick={() => setIsSidebarOpen(false)}
+        />
+      )}
 
       {/* Sidebar */}
       <Sidebar />
 
       {/* Main Content */}
-      <main className={`main-content ${!isSidebarOpen ? '' : ''} md:with-sidebar`}>
-        <div className="p-6 md:p-10 relative z-10">
-          <div className="max-w-7xl mx-auto">
-            {children}
-          </div>
+      <main className="flex-1 flex flex-col md:ml-0">
+        <div className="flex-1 overflow-auto pt-20 md:pt-0">
+          {children}
         </div>
       </main>
     </div>
